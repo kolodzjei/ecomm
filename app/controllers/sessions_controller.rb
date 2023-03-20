@@ -7,7 +7,6 @@ class SessionsController < ApplicationController
 
   def create
     @user = User.find_by(email: params[:user][:email].downcase)
-
     if @user
       if @user.unconfirmed?
         redirect_to new_confirmation_path, alert: 'You must confirm your email address before continuing'
@@ -27,6 +26,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    return if current_user.nil?
+
     forget(current_user)
     logout
     redirect_to root_path, notice: 'You are now logged out.'

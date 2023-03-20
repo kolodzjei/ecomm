@@ -10,6 +10,7 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :unconfirmed_email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
   validates :name, presence: true, length: { maximum: 50 }
+  validates :password, length: { minimum: 6 }, allow_blank: true
 
   def confirm!
     if unconfirmed_or_reconfirming?
