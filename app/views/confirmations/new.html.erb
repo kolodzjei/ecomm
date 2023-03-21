@@ -1,4 +1,8 @@
+<div class="confirmation-new">
+<div class="form">
 <%= form_with model: @user, url: confirmations_path do |f| %>
-  <%= f.email_field :email, required: true %>
+  <%= f.email_field :email, required: true, placeholder: "E-mail" %>
   <%= f.submit "Send confirmation email" %>
 <% end %>
+</div>
+</div>

@@ -1,4 +1,8 @@
+<div class="confirmation-new">
+<div class="form">
 <%= form_with url: passwords_path, scope: :user do |form| %>
-  <%= form.email_field :email, required: true %>
+  <%= form.email_field :email, required: true, placeholder: "E-mail" %>
   <%= form.submit "Reset Password" %>
 <% end %>
+</div>
+</div>
