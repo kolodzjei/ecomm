@@ -12,4 +12,5 @@ Rails.application.routes.draw do
   put 'profile', to: 'users#update'
   get 'profile', to: 'users#edit'
   delete 'profile', to: 'users#destroy'
+  resources :products, only: %i[index show new create edit update destroy]
 end

@@ -37,6 +37,18 @@ module Authentication
     cookies.permanent.encrypted[:remember_token] = user.remember_token
   end
 
+  def logged_in?
+    !!current_user
+  end
+
+  def admin?
+    logged_in? && current_user.admin?
+  end
+
+  def authenticate_admin!
+    redirect_to root_path, alert: 'You must be an admin to do that.' unless admin?
+  end
+
   private
 
   def current_user

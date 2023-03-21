@@ -21,6 +21,9 @@
               Account <b class="caret"></b>
             </a>
             <ul id="dropdown-menu" class="dropdown-menu">
+              <% if admin? %>
+              <li><%= link_to "Products panel", products_path %></li>
+              <% end %>
               <li><%= link_to "Profile", profile_path %></li>
               <li class="divider"></li>
               <li>

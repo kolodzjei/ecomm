@@ -1,0 +1,18 @@
+<div>
+  <div class="col-md-4">
+    <div class="thumbnail">
+      <div class="caption">
+        <h3><%= product.name %></h3>
+        <p><%= product.description[0,75] %>...</p>
+        <p>
+          <strong>Price: <%= number_to_currency product.price %></strong>
+        </p>
+        <p>
+          <%= link_to "Show", product, class: "btn btn-primary" %>
+          <%= link_to "Edit", edit_product_path(product), class: "btn btn-warning" %>
+          <%= link_to "Destroy", product, data: {"turbo-method": :delete, turbo_confirm: "You sure?"},class: "btn btn-danger" %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
