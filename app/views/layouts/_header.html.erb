@@ -15,7 +15,7 @@
       <% if logged_in? %>
       <ul id="navbar-menu"
           class="nav navbar-nav navbar-right collapse navbar-collapse">
-          <li><%= link_to "Cart", '#' %></li>
+          <li><%= link_to "Cart", cart_path(current_user.cart) %></li>
           <li class="dropdown">
             <a href="#" id="account" class="dropdown-toggle">
               Account <b class="caret"></b>

@@ -49,8 +49,6 @@ module Authentication
     redirect_to root_path, alert: 'You must be an admin to do that.' unless admin?
   end
 
-  private
-
   def current_user
     Current.user ||= if session[:current_user_id].present?
                        User.find_by(id: session[:current_user_id])
@@ -58,6 +56,8 @@ module Authentication
                        User.find_by(remember_token: cookies.permanent.encrypted[:remember_token])
                      end
   end
+
+  private
 
   def user_signed_in?
     Current.user.present?

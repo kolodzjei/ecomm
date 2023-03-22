@@ -1,0 +1,7 @@
+<div class="home-products">
+  <% @products.each do |product| %>
+
+  <%= render 'static_pages/home_product_tile', product: product %>
+
+  <% end %>
+</div>

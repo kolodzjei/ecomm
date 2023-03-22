@@ -12,7 +12,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 20_230_321_151_613) do
+ActiveRecord::Schema[7.0].define(version: 20_230_321_180_959) do
+  create_table 'carts', force: :cascade do |t|
+    t.integer 'user_id', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['user_id'], name: 'index_carts_on_user_id'
+  end
+
+  create_table 'items', force: :cascade do |t|
+    t.integer 'quantity', default: 1
+    t.integer 'cart_id'
+    t.integer 'product_id', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['cart_id'], name: 'index_items_on_cart_id'
+    t.index ['product_id'], name: 'index_items_on_product_id'
+  end
+
   create_table 'products', force: :cascade do |t|
     t.string 'name', null: false
     t.string 'description', null: false
@@ -34,4 +51,8 @@ ActiveRecord::Schema[7.0].define(version: 20_230_321_151_613) do
     t.index ['email'], name: 'index_users_on_email', unique: true
     t.index ['remember_token'], name: 'index_users_on_remember_token', unique: true
   end
+
+  add_foreign_key 'carts', 'users'
+  add_foreign_key 'items', 'carts'
+  add_foreign_key 'items', 'products'
 end

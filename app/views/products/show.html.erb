@@ -14,6 +14,8 @@
 <h1><%= @product.name %></h1>
 <h3><%= number_to_currency @product.price %></h3>
 <h2><%= @product.description %></h2>
+
+<%= render 'items/item_form' %>
 <%= link_to "Add to cart", '#', class:"btn btn-success"%>
 </div>
 </div>

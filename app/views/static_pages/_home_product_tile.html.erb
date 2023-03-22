@@ -1,0 +1,19 @@
+<div class="product-tile">
+  <%= link_to "", product_path(product), class: "product-image"%>
+
+  <div class="product-details">
+    <div class="product-name">
+      <h3><%= link_to product.name, product_path(product) %></h3>
+    </div>
+    <div class="product-price">
+      <p><strong><%= number_to_currency(product.price) %></strong></p>
+    </div>
+    <div class="product-description">
+      <% if product.description.length > 175%>
+        <%= product.description[0..175] %>...
+      <% else %>
+        <%= product.description %>
+      <% end %>
+    </div>
+  </div>
+</div>

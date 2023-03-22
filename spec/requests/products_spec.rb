@@ -68,7 +68,6 @@ RSpec.describe 'Products', type: :request do
   end
 
   describe 'GET /products/:id/edit' do
-
     before :each do
       @product = create(:product)
     end
@@ -92,7 +91,6 @@ RSpec.describe 'Products', type: :request do
   end
 
   describe 'PATCH /products/:id' do
-
     before :each do
       @product = create(:product)
     end
@@ -145,11 +143,9 @@ RSpec.describe 'Products', type: :request do
   end
 
   describe 'DELETE /products/:id' do
-    
     before :each do
       @product = create(:product)
     end
-
 
     it 'deletes for admin' do
       log_in_admin
@@ -176,7 +172,6 @@ RSpec.describe 'Products', type: :request do
   end
 
   describe 'GET /products/:id' do
-
     before :each do
       @product = create(:product)
     end

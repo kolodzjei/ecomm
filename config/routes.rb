@@ -13,4 +13,8 @@ Rails.application.routes.draw do
   get 'profile', to: 'users#edit'
   delete 'profile', to: 'users#destroy'
   resources :products, only: %i[index show new create edit update destroy]
+  resources :carts, only: %i[show]
+  resources :items, only: %i[create destroy]
+  post 'items/:id/add', to: 'items#add', as: 'add_item'
+  delete 'items/:id/remove', to: 'items#remove', as: 'remove_item'
 end

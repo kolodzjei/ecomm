@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  has_one :cart, dependent: :destroy
   has_secure_password
   has_secure_token :remember_token
   attr_accessor :current_password
 
   before_save :downcase_email
   before_save :downcase_unconfirmed_email
+  before_create :create_cart
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :unconfirmed_email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
   validates :name, presence: true, length: { maximum: 50 }
@@ -74,5 +76,9 @@ class User < ApplicationRecord
     return if unconfirmed_email.nil?
 
     self.unconfirmed_email = unconfirmed_email.downcase
+  end
+
+  def create_cart
+    self.cart = Cart.new
   end
 end
