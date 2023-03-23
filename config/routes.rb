@@ -17,4 +17,10 @@ Rails.application.routes.draw do
   resources :items, only: %i[create destroy]
   post 'items/:id/add', to: 'items#add', as: 'add_item'
   delete 'items/:id/remove', to: 'items#remove', as: 'remove_item'
+  resources :orders, only: %i[index show new create]
+  delete 'orders/:id/cancel', to: 'orders#cancel', as: 'cancel_order'
+  get 'orders/:id/pay', to: 'orders#pay', as: 'pay_order'
+  post 'orders/:id/ship', to: 'orders#ship', as: 'ship_order'
+  post 'orders/:id/receive', to: 'orders#receive', as: 'receive_order'
+  post 'orders/:id/pay', to: 'orders#paid', as: 'paid_order'
 end

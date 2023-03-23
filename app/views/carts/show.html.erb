@@ -1,56 +1,55 @@
-<div class="cart">
-<div class="cart-items">
-<% @cart.items.each do |i| %>
-  <div class="col-md-4">
-    <div class="thumbnail">
-      <div class="caption">
-        <h3><%= i.product.name %></h3>
-        <p><%= i.product.description[0,75] %>...</p>
-        <p>
-          <strong>Price: <%= number_to_currency i.product.price %></strong>
-        </p>
-
-        <p>
-
-          <% if i.quantity > 1%>
-            <%= link_to "-", remove_item_path(i), data: { turbo_method: "delete" } %>
-          <% else %>
-            <%= link_to "-", item_path(i), data: { turbo_method: "delete" } %>
-          <% end %>
-          <strong>Qty. <%= i.quantity %> </strong>
-          <%= link_to "+", add_item_path(i), data: { turbo_method: "post" } %>
-        </p>
-          
-        <hr style="border-top: 2px black solid">
-        <p>
-          <strong>Total: <%= number_to_currency i.total_price %></strong>
-        </p>
+<% if current_user.cart.items.any? %>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <h2>Your Cart</h2>
+      <% @cart.items.each do |item| %>
+        <div class="row">
+          <div class="col-md-2">
+            <img src="" alt="<%= item.product.name %>" class="img-responsive">
+          </div>
+          <div class="col-md-10">
+            <h4><%= item.product.name %></h4>
+            <p>
+              <% if item.quantity >1 %>
+                <%= link_to "-", remove_item_path(item), data: { "turbo-method": :delete  } %>
+              <% else %>
+                <%= link_to "-", item_path(item), data: { "turbo-method": :delete } %>
+              <% end %>
+             <%= number_to_currency(item.product.price) %> x <%= item.quantity %>
+              <%= link_to "+", add_item_path(item), data: { "turbo-method": :post } %>
+             </p>
+          </div>
+        </div>
+        <hr>
+      <% end %>
+      <div class="row">
+        <div class="col-md-12">
+          <h4>Subtotal: <%= number_to_currency(@cart.subtotal) %></h4>
+          <hr>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <h2>Summary</h2>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <p>Subtotal: <%= number_to_currency(@cart.subtotal) %></p>
+          <p>Shipping: <%= number_to_currency(@cart.shipping) %></p>
+          <hr>
+          <h4>Total: <%= number_to_currency(@cart.total) %></h4>
+          <%= link_to "Proceed to checkout", new_order_path, class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% else %>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>Your cart is empty</h2>
       </div>
     </div>
   </div>
 <% end %>
-</div>
-
-<div class="cart-total">
-<div class="summary">
-  <div class="thumbnail">
-    <div class="caption">
-      <h3><strong>Summary</strong></h3>
-      <p>
-        Subtotal: <%= number_to_currency @cart.subtotal %>
-      </p>
-      <p>
-        Shipping: <%= number_to_currency @cart.shipping %>
-      </p>
-      <hr style="border-top: 2px black solid">
-      <p>
-        <strong>Total: <%= number_to_currency @cart.total %></strong>
-      </p>
-        
-      <%= link_to "Checkout", '#', class: "btn btn-primary", data: { turbo_method: "post" } %>
-    </div>
-  </div>
-</div>
-</div>
-
-</div>

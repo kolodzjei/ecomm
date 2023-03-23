@@ -1,0 +1,31 @@
+<h2>Pay for Order #<%= @order.id %></h2>
+<h2>FAKE PAYMENT PROCESS</h2>
+<form>
+  <div class="form-group">
+    <label for="cardNumber">Card number</label>
+    <input type="text" class="form-control" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456">
+  </div>
+  <div class="form-group">
+    <label for="cardName">Name on card</label>
+    <input type="text" class="form-control" id="cardName" name="cardName" placeholder="John Doe">
+  </div>
+  <div class="form-row">
+    <div class="col-4 form-group">
+      <label for="cardExpiryMonth">Expiration month</label>
+      <input type="text" class="form-control" id="cardExpiryMonth" name="cardExpiryMonth" placeholder="MM">
+    </div>
+    <div class="col-4 form-group">
+      <label for="cardExpiryYear">Expiration year</label>
+      <input type="text" class="form-control" id="cardExpiryYear" name="cardExpiryYear" placeholder="YYYY">
+    </div>
+    <div class="col-4 form-group">
+      <label for="cardCVC">CVC</label>
+      <input type="text" class="form-control" id="cardCVC" name="cardCVC" placeholder="123">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="cardAmount">Amount</label>
+    <input type="text" class="form-control" id="cardAmount" name="cardAmount" value="<%= number_to_currency(@order.total) %>" readonly>
+  </div>
+  <%= link_to "Pay", paid_order_path(@order), class: "btn btn-primary", data: {"turbo-method": :post} %>
+</form>

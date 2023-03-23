@@ -1,21 +1,19 @@
-
-<% if admin? %>
-  <div style="display:flex; flex-direction:row-reverse; gap: 20px">
-  <%= link_to "Destroy", @product, data: {"turbo-method": :delete, turbo_confirm: "You sure?"},class: "btn btn-danger" %>
-  <%= link_to "Edit", edit_product_path(@product), class: "btn btn-warning" %>
-  </div >
-<% end %>
-
-<div class="product">
-<div class="image" style="width:300px; height:300px; background-color:#1c1c1c">
-</div>
-
-<div class="text">
-<h1><%= @product.name %></h1>
-<h3><%= number_to_currency @product.price %></h3>
-<h2><%= @product.description %></h2>
-
-<%= render 'items/item_form' %>
-<%= link_to "Add to cart", '#', class:"btn btn-success"%>
-</div>
+<div class="container">
+  <div class="row">
+    <% if current_user.admin? %>
+      <div class="col-md-12 mb-4">
+        <%= link_to "Destroy", @product, data: {"turbo-method": :delete, turbo_confirm: "You sure?"}, class: "btn btn-danger" %>
+        <%= link_to "Edit", edit_product_path(@product), class: "btn btn-warning" %>
+      </div>
+    <% end %>
+    <div class="col-md-5">
+      <%# image_tag @product.image_url, class: "img-fluid" %>
+    </div>
+    <div class="col-md-7">
+      <h2><%= @product.name %></h2>
+      <p class="lead"><%= number_to_currency(@product.price) %></p>
+      <p><%= @product.description %></p>
+      <%= render 'items/item_form' %>
+    </div>
+  </div>
 </div>

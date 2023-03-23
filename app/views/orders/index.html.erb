@@ -1,0 +1,18 @@
+<div class="container">
+  <h1>All Orders</h1>
+  <div class="row">
+    <% @orders.each do |order| %>
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title">Order #<%= order.id %></h3>
+            <p class="card-text">Total: $<%= order.total %></p>
+            <p class="card-text">Status: <%= order.status %></p>
+            <%= link_to "View Order", order_path(order), class: "btn btn-primary" %>
+            <hr>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

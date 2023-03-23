@@ -463,3 +463,80 @@ p {
 
   }
 }
+.order-page{
+  h2{
+    font-size: 36px;
+    color:rgb(21, 21, 21)
+  }
+}
+
+.order-cart{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+
+  
+  
+    .sum{
+      p{
+        width: 100%;
+      }
+      display: flex;
+      flex-direction: column-reverse;
+    }
+
+    .order-summary{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      form{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        textarea{
+          height: 100px;
+          width: 200px;
+        }
+
+        input{
+          margin-top: 0;
+          padding: 3px 10px;
+          border-radius: 10px;
+          width:100%;
+          background-color: #111111;
+          color:white;
+          margin-bottom: 30px;
+        }
+      }
+    }
+  }
+
+
+.order-item{
+
+    .desc{
+      display:flex;
+      flex-direction: row;
+      gap: 20px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    gap: 40px;
+    border-bottom: 2px solid #d2d2d2;
+    .image{
+      display:inline-block;
+      width: 100px;
+      height: 100px;
+      background-color: black;
+    }
+  }

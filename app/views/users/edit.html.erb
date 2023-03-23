@@ -1,40 +1,61 @@
-<div class="profile-edit">
-<div class="form">
-<%= form_with model: @user, url: profile_path, method: :put do |f| %>
-  <%= render partial: "shared/form_errors", locals: { object: f.object } %>
+<div class="row">
+  <div class="col-lg-6">
+    <div class="profile-edit">
+      <div class="form">
+        <%= form_with model: @user, url: profile_path, method: :put do |f| %>
+          <%= render partial: "shared/form_errors", locals: { object: f.object } %>
 
-  <div>
-    <%= f.label :name %>
-    <%= f.text_field :name %>
+          <div>
+            <%= f.label :name %>
+            <%= f.text_field :name %>
+          </div>
+
+          <div>
+            <%= f.label :email, "Current email" %>
+            <%= f.text_field :email, disabled: true %>
+          </div>
+          <div>
+            <%= f.label :unconfirmed_email, "New Email" %>
+            <%= f.text_field :unconfirmed_email %>
+          </div>
+
+          <div>
+            <%= f.label :password, "Password (leave blank if you don't want to change it)" %>
+            <%= f.password_field :password %>
+          </div>
+          <div>
+            <%= f.label :password_confirmation %>
+            <%= f.password_field :password_confirmation %>
+          </div>
+
+          <hr/>
+          <div>
+            <%= f.label :current_password, "Current password (we need your current password to confirm your changes)" %>
+            <%= f.password_field :current_password, required: true %>
+          </div>
+
+          <%= f.submit "Update Account" %>
+        <% end %>
+      </div>
+    </div>
   </div>
 
-  <div>
-    <%= f.label :email, "Current email" %>
-    <%= f.text_field :email, disabled: true %>
+  <div class="col-lg-6">
+    <h2>Orders</h2>
+    <% if @user.orders.any? %>
+      <% @user.orders.each do |order| %>
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title"><%= link_to "Order ##{order.id}", order_path(order) %></h5>
+            <p class="card-text">
+              <%= "Status: #{order.status}" %>
+              <%= "Total: $#{order.total}" %>
+            </p>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <p>No orders yet.</p>
+    <% end %>
   </div>
-  <div>
-    <%= f.label :unconfirmed_email, "New Email" %>
-    <%= f.text_field :unconfirmed_email %>
-  </div>
-
-  <div>
-    <%= f.label :password, "Password (leave blank if you don't want to change it)" %>
-    <%= f.password_field :password %>
-  </div>
-  <div>
-    <%= f.label :password_confirmation %>
-    <%= f.password_field :password_confirmation %>
-  </div>
-
-
-  <hr/>
-  <div>
-    <%= f.label :current_password, "Current password (we need your current password to confirm your changes)" %>
-    <%= f.password_field :current_password, required: true %>
-  </div>
-
-
-  <%= f.submit "Update Account" %>
-<% end %>
-</div>
 </div>

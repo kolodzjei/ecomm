@@ -10,7 +10,7 @@ class Cart < ApplicationRecord
   end
 
   def shipping
-    9.99
+    0.00
   end
 
   def total
