@@ -13,6 +13,9 @@
 <%= f.label :price %>
 <%= f.number_field :price, step: :any %>
 
+
+<%= f.file_field :image, accept: "image/jpeg, image/jpg, image/png" %>
+
 <%= f.submit yield(:button_text) %>
 <% end %>
 </div>

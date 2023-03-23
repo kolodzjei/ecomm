@@ -15,7 +15,9 @@
           <div class="col-md-4">
             <div class="thumbnail">
               <a href="<%= product_path(product) %>">
-                <img src="" alt="<%= product.name %>" class="img-responsive">
+                <% if product.image.attached? %>
+                  <%= image_tag product.image.variant(:thumb), class:"img-responsive"%>
+                <% end %>
               </a>
               <div class="caption">
                 <h3><%= product.name %></h3>

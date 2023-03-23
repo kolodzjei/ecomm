@@ -8,7 +8,7 @@ User.create!(name: 'Example User',
              confirmed_at: Time.zone.now)
 
 10.times do |n|
-  Product.create!(name: "Product #{n}",
-                  description: Faker::Lorem.paragraph(sentence_count: 6),
-                  price: Faker::Number.decimal(l_digits: 2))
+  p = Product.create!(name: "Product #{n}",
+                      description: Faker::Lorem.paragraph(sentence_count: 6),
+                      price: Faker::Number.decimal(l_digits: 2))
 end

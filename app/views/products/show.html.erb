@@ -7,7 +7,9 @@
       </div>
     <% end %>
     <div class="col-md-5">
-      <%# image_tag @product.image_url, class: "img-fluid" %>
+      <% if @product.image.attached? %>
+      <%= image_tag @product.image.variant(:large), class: "img-fluid" %>
+      <% end %>
     </div>
     <div class="col-md-7">
       <h2><%= @product.name %></h2>
