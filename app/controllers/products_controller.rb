@@ -5,7 +5,7 @@ class ProductsController < ApplicationController
   before_action :authenticate_user!, only: %i[show]
 
   def index
-    @products = Product.all
+    @pagy, @products = pagy(Product.all, items: 12)
   end
 
   def show
@@ -23,6 +23,10 @@ class ProductsController < ApplicationController
   def create
     @product = Product.new(product_params)
     @product.image.attach(params[:product][:image])
+
+    params[:product][:category_ids][1..].each do |category_id|
+      @product.categories << Category.find_by(id: category_id)
+    end
 
     if @product.save
       flash[:success] = 'Product created'

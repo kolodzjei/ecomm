@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Product < ApplicationRecord
+  has_and_belongs_to_many :categories
   has_many :items, dependent: :destroy
   validates :name, presence: true, length: { minimum: 3, maximum: 50 }
   validates :description, presence: true, length: { maximum: 500 }
@@ -13,6 +14,7 @@ class Product < ApplicationRecord
   validates :image, attached: false, content_type: { in: %w[image/png image/jpg image/jpeg], message: 'must be a valid image format' },
                     size: { less_than: 5.megabytes, message: 'should be less than 5MB' }
   before_save :set_default_image
+  scope :by_category, ->(category_ids) { joins(:categories).where(categories: { id: category_ids }).distinct }
 
   private
 

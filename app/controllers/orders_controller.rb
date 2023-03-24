@@ -31,7 +31,7 @@ class OrdersController < ApplicationController
   end
 
   def index
-    @orders = Order.all
+    @pagy, @orders = pagy(Order.all, items: 12)
   end
 
   def cancel

@@ -23,4 +23,5 @@ Rails.application.routes.draw do
   post 'orders/:id/ship', to: 'orders#ship', as: 'ship_order'
   post 'orders/:id/receive', to: 'orders#receive', as: 'receive_order'
   post 'orders/:id/pay', to: 'orders#paid', as: 'paid_order'
+  resources :categories, only: %i[index create destroy update edit new]
 end

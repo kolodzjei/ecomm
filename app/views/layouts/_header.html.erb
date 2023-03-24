@@ -1,4 +1,4 @@
-<header class="navbar navbar-fixed-top navbar-inverse">
+l<header class="navbar navbar-fixed-top navbar-inverse">
 
   <div class="container">
     <%= link_to "Ecomm", root_path, id: "logo" %>
@@ -24,7 +24,8 @@
               <% if admin? %>
               <li><%= link_to "Products panel", products_path %></li>
               <li><%= link_to "All orders", orders_path %></li>
-
+              <li><%= link_to "Categories", categories_path %></li>
+              <li class="divider"></li>
               <% end %>
               <li><%= link_to "Profile", profile_path %></li>
               <li class="divider"></li>

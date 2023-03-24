@@ -13,6 +13,13 @@
 <%= f.label :price %>
 <%= f.number_field :price, step: :any %>
 
+<%= f.label :category_ids, "Categories" %>
+  <%= f.collection_check_boxes :category_ids, Category.all, :id, :name do |cb| %>
+  <div class="checkbox">
+    <%= cb.check_box %>
+    <%= cb.label %>
+  </div>
+<% end %>
 
 <%= f.file_field :image, accept: "image/jpeg, image/jpg, image/png" %>
 
