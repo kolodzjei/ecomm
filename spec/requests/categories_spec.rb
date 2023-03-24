@@ -66,7 +66,6 @@ RSpec.describe 'Categories', type: :request do
       @category = Category.create(name: 'test')
     end
 
-
     it 'redirects to login page if not logged in' do
       get edit_category_path(@category)
       expect(response).to redirect_to(login_path)

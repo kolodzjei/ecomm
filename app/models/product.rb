@@ -15,6 +15,14 @@ class Product < ApplicationRecord
                     size: { less_than: 5.megabytes, message: 'should be less than 5MB' }
   before_save :set_default_image
   scope :by_category, ->(category_ids) { joins(:categories).where(categories: { id: category_ids }).distinct }
+  scope :by_search, ->(search) { where('products.name LIKE ?', "%#{search}%") }
+
+  def self.search(params)
+    all = Product.all
+    all = all.by_category(params[:category_ids]) if params[:category_ids].present?
+    all = all.by_search(params[:search]) if params[:search].present?
+    all
+  end
 
   private
 

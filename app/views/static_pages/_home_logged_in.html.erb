@@ -13,10 +13,11 @@
           <% end %>
         </div>
         <%= submit_tag "Filter", class: "btn btn-primary" %>
+        <% if params[:search].present? %>
+          <%= hidden_field_tag "search", params[:search] %>
+        <% end %>
       <% end %>
-      <% if params[:category_ids].present? %>
-        <%= link_to "Reset filters", root_path, class: "btn btn-default" %>
-      <% end %>
+
       </div>
     </div>
     <div class="col-md-9">

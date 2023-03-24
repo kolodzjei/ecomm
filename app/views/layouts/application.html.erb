@@ -15,7 +15,7 @@
     <div class="container">
       <%= render 'layouts/flash' %>
       <%= yield %>
-      <%= turbo_frame_tag "remote_modal", target: "_top" %>
+       <%= debug(params) if Rails.env.development? %>
     </div>
   </body>
 </html>
