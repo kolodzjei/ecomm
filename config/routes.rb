@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   get 'profile', to: 'users#edit'
   delete 'profile', to: 'users#destroy'
   resources :products, only: %i[index show new create edit update destroy]
-  resources :carts, only: %i[show]
+  resources :carts, only: %i[index], path: 'cart'
   resources :items, only: %i[create destroy]
   post 'items/:id/add', to: 'items#add', as: 'add_item'
   delete 'items/:id/remove', to: 'items#remove', as: 'remove_item'
@@ -24,4 +24,8 @@ Rails.application.routes.draw do
   post 'orders/:id/receive', to: 'orders#receive', as: 'receive_order'
   post 'orders/:id/pay', to: 'orders#paid', as: 'paid_order'
   resources :categories, only: %i[index create destroy update edit new]
+  resources :wishlists, only: %i[index create destroy], path: 'wishlist'
+  post 'wishlist/add/:product_id', to: 'wishlists#create', as: 'wishlist_add'
+  delete 'wishlist/remove/:product_id', to: 'wishlists#destroy', as: 'wishlist_remove'
+  post 'cart/add/:product_id', to: 'items#create', as: 'cart_add'
 end

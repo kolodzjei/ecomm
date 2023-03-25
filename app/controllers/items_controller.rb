@@ -2,11 +2,10 @@
 
 class ItemsController < ApplicationController
   before_action :authenticate_user!
-  # before_action :check_user, only: %i[create destroy add remove]
 
   def create
-    product = Product.find_by(id: params[:item][:product_id])
-    cart = current_user.cart if current_user.cart.id == params[:item][:cart_id].to_i
+    product = Product.find_by(id: params[:product_id])
+    cart = current_user.cart
 
     if product && cart
 
@@ -19,7 +18,7 @@ class ItemsController < ApplicationController
       end
 
       flash[:notice] = 'Item added to cart'
-      redirect_to cart_path(cart)
+      redirect_to carts_path
     else
       flash[:alert] = 'Something went wrong'
       redirect_to root_path
@@ -30,7 +29,7 @@ class ItemsController < ApplicationController
     item = Item.find_by(id: params[:id])
     if item && current_user.cart.id == item.cart_id
       item.destroy
-      redirect_to cart_path(item.cart)
+      redirect_to carts_path
     else
       flash[:alert] = 'Something went wrong'
       redirect_to root_path
@@ -41,7 +40,7 @@ class ItemsController < ApplicationController
     item = Item.find_by(id: params[:id])
     if item && current_user.cart.id == item.cart_id
       item.update_attribute(:quantity, item.quantity + 1)
-      redirect_to cart_path(item.cart)
+      redirect_to carts_path
     else
       flash[:alert] = 'Something went wrong'
       redirect_to root_path
@@ -52,20 +51,10 @@ class ItemsController < ApplicationController
     item = Item.find_by(id: params[:id])
     if item && current_user.cart.id == item.cart_id
       item.update_attribute(:quantity, item.quantity - 1) if item.quantity > 1
-      redirect_to cart_path(item.cart)
+      redirect_to carts_path
     else
       flash[:alert] = 'Something went wrong'
       redirect_to root_path
     end
   end
-
-  private
-
-  def item_params
-    params.require(:item).permit(:product_id, :cart_id)
-  end
-
-  # def check_user
-  #   redirect_to root_path unless current_user.cart.id == params[:item][:cart_id].to_i
-  # end
 end

@@ -6,6 +6,12 @@
         <%= link_to "Edit", edit_product_path(@product), class: "btn btn-warning" %>
       </div>
     <% end %>
+    <% unless current_user.wishlist.products.include?(@product) %>
+      <div class="col-md-12 mb-4">
+        <%= link_to "Add to Wishlist", wishlist_add_path(@product), data: {"turbo-method": :post}, class: "btn btn-primary" %>
+      </div>
+    <% end %>
+
     <div class="col-md-5">
       <% if @product.image.attached? %>
       <%= image_tag @product.image.variant(:large), class: "img-fluid" %>
@@ -15,7 +21,7 @@
       <h2><%= @product.name %></h2>
       <p class="lead"><%= number_to_currency(@product.price) %></p>
       <p><%= @product.description %></p>
-      <%= render 'items/item_form' %>
+      <%= link_to "Add to cart", cart_add_path(@product), data: {"turbo-method": :post}, class: "btn btn-primary" %>
     </div>
   </div>
 </div>

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  has_one :wishlist, dependent: :destroy
   has_one :cart, dependent: :destroy
   has_many :orders, dependent: :destroy
   has_secure_password
@@ -10,6 +11,7 @@ class User < ApplicationRecord
   before_save :downcase_email
   before_save :downcase_unconfirmed_email
   before_create :create_cart
+  before_create :create_wishlist
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :unconfirmed_email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
   validates :name, presence: true, length: { maximum: 50 }
@@ -81,5 +83,9 @@ class User < ApplicationRecord
 
   def create_cart
     self.cart = Cart.new
+  end
+
+  def create_wishlist
+    self.wishlist = Wishlist.new
   end
 end

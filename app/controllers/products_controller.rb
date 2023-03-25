@@ -24,8 +24,10 @@ class ProductsController < ApplicationController
     @product = Product.new(product_params)
     @product.image.attach(params[:product][:image])
 
-    params[:product][:category_ids][1..].each do |category_id|
-      @product.categories << Category.find_by(id: category_id)
+    unless params[:product][:category_ids].nil?
+      params[:product][:category_ids][1..].each do |category_id|
+        @product.categories << Category.find_by(id: category_id)
+      end
     end
 
     if @product.save
