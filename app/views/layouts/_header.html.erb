@@ -1,64 +1,51 @@
-l<header class="navbar navbar-fixed-top navbar-inverse">
-
-  <div class="container">
-    <%= link_to "Ecomm", root_path, id: "logo" %>
-    <% if logged_in? %>
-    <%= form_tag root_path, method: :get, class: "navbar-form navbar-right" do %>
-      <div class="form-group">
-        <%= text_field_tag :search, params[:search], placeholder: "Search products...", class:"form-control" %>
-        <%= submit_tag "Search", class: "btn btn-default" %>
-      </div>
-      <% if params[:category_ids].present? %>
-      <% params[:category_ids].each do |id| %>
-        <%= hidden_field_tag "category_ids[]", id, multiple: true %>
-      <% end %>
-      <% end %>
-    <% end %>
-  <% end %>
-
-
-
-
-    <div class="navbar-header">
-        <button id="hamburger" type="button" class="navbar-toggle collapsed">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
+<header class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <div class="container-fluid">
+    <%= link_to "Ecomm", root_path, class: "navbar-brand" %>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
       <% if logged_in? %>
-      <ul id="navbar-menu"
-          class="nav navbar-nav navbar-right collapse navbar-collapse">
-          <li><%= link_to "Cart", carts_path %></li>
-          <li class="dropdown">
-            <a href="#" id="account" class="dropdown-toggle">
-              Account <b class="caret"></b>
-            </a>
-            <ul id="dropdown-menu" class="dropdown-menu">
-              <% if admin? %>
-              <li><%= link_to "Admin dashboard", admin_dashboard_path %></li>
-              <li class="divider"></li>
-              <% end %>
-              <li><%= link_to "Profile", profile_path %></li>
-              <li><%= link_to "Wishlist", wishlists_path %></li>
-              <li class="divider"></li>
-              <li>
-                <%= link_to "Log out", logout_path,
-                                       data: { "turbo-method": :delete } %>
-              </li>
-            </ul>
-          </li>
-      </ul>
-      <% else %>
-      <ul id="navbar-menu"
-          class="nav navbar-nav navbar-right collapse navbar-collapse">
-          <li><%= link_to "Sign up", signup_path %></li>
-          <li><%= link_to "Log in", login_path %></li>
-      </ul>
+      <form class="d-flex mx-auto my-2 my-lg-0" action="<%= root_path %>" method="get">
+        <div class="input-group">
+          <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search products..." %>
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </div>
+        <% if params[:category_ids].present? %>
+          <% params[:category_ids].each do |id| %>
+            <%= hidden_field_tag "category_ids[]", id, multiple: true %>
+          <% end %>
+        <% end %>
+      </form>
       <% end %>
-    </nav>
+      <ul class="navbar-nav ms-auto">
+        <% if logged_in? %>
+        <li class="nav-item"><%= link_to "Cart", carts_path, class: "nav-link" %></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Account
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
+            <% if admin? %>
+            <li><%= link_to "Admin dashboard", admin_dashboard_path, class: "dropdown-item" %></li>
+            <li><hr class="dropdown-divider"></li>
+            <% end %>
+            <li><%= link_to "Profile", profile_path, class: "dropdown-item" %></li>
+            <li><%= link_to "Wishlist", wishlists_path, class: "dropdown-item" %></li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <%= link_to "Log out", logout_path, class: "dropdown-item",
+                data: { "turbo-method": :delete } %>
+            </li>
+          </ul>
+        </li>
+        <% else %>
+        <li class="nav-item"><%= link_to "Sign up", signup_path, class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to "Log in", login_path, class: "nav-link" %></li>
+        <% end %>
+      </ul>
+    </div>
   </div>
-
 </header>
-
