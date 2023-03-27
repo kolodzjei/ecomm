@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 20_230_324_230_344) do
+ActiveRecord::Schema[7.0].define(version: 20_230_325_224_408) do
   create_table 'active_storage_attachments', force: :cascade do |t|
     t.string 'name', null: false
     t.string 'record_type', null: false
@@ -113,6 +113,7 @@ ActiveRecord::Schema[7.0].define(version: 20_230_324_230_344) do
     t.string 'unconfirmed_email'
     t.string 'remember_token', null: false
     t.boolean 'admin', default: false
+    t.boolean 'disabled', default: false
     t.index ['email'], name: 'index_users_on_email', unique: true
     t.index ['remember_token'], name: 'index_users_on_remember_token', unique: true
   end

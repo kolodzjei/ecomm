@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: %i[edit update destroy]
+  before_action :authenticate_user!, only: %i[edit update destroy index disable]
+  before_action :authenticate_admin!, only: %i[index disable]
+
+  def index
+    @pagy, @users = pagy(User.all, items: 20)
+  end
 
   def new
     @user = User.new
@@ -39,6 +44,20 @@ class UsersController < ApplicationController
       flash.now[:error] = 'Incorrect password'
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def disable
+    @user = User.find_by(id: params[:id])
+    @user.update_attribute(:disabled, true)
+    flash[:notice] = 'User disabled'
+    redirect_to users_path
+  end
+
+  def enable
+    @user = User.find_by(id: params[:id])
+    @user.update_attribute(:disabled, false)
+    flash[:notice] = 'User unlocked'
+    redirect_to users_path
   end
 
   private

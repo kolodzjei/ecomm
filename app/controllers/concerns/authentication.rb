@@ -55,6 +55,14 @@ module Authentication
                      elsif cookies.encrypted[:remember_token].present?
                        User.find_by(remember_token: cookies.permanent.encrypted[:remember_token])
                      end
+
+    if Current.user.present? && Current.user.disabled?
+      logout
+      Current.user = nil
+      redirect_to root_path, alert: 'Your account has been disabled.'
+    end
+
+    Current.user
   end
 
   private

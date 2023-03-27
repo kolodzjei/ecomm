@@ -7,6 +7,8 @@ class SessionsController < ApplicationController
 
   def create
     @user = User.find_by(email: params[:user][:email].downcase)
+    @user = nil if @user&.disabled?
+
     if @user
       if @user.unconfirmed?
         redirect_to new_confirmation_path, alert: 'You must confirm your email address before continuing'

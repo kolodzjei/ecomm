@@ -1,0 +1,32 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>E-mail</th>
+      <th>Order count</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td <% if user.disabled? %>
+              style="text-decoration: line-through; color: red;"
+                <% end%>
+            >
+            <%=user.name%>
+            </td>
+            <td><%=user.email%></td>
+            <td><%=user.orders.count%></td>
+            <td>
+              <% if user != current_user && !user.disabled? %>
+                <%= link_to "Disable", disable_user_path(user), data: {"turbo-method": :delete, turbo_confirm: "Are you sure you want to disable this account?"}, class: "btn btn-danger btn-sm" %>
+              <% elsif user.disabled? %>
+                <%= link_to "Enable", enable_user_path(user), data: {"turbo-method": :post, turbo_confirm: "Are you sure you want to enable this account?"}, class: "btn btn-success btn-sm" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+</table>
+<%== pagy_nav(@pagy) %>

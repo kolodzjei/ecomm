@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  namespace :admin do
+    get 'dashboard', to: 'dashboard#index', as: 'dashboard'
+  end
+  resources :users, only: %i[index]
   root 'static_pages#home'
   post 'signup', to: 'users#create'
   get 'signup', to: 'users#new'
@@ -28,4 +32,6 @@ Rails.application.routes.draw do
   post 'wishlist/add/:product_id', to: 'wishlists#create', as: 'wishlist_add'
   delete 'wishlist/remove/:product_id', to: 'wishlists#destroy', as: 'wishlist_remove'
   post 'cart/add/:product_id', to: 'items#create', as: 'cart_add'
+  delete 'users/:id/disable', to: 'users#disable', as: 'disable_user'
+  post 'users/:id/enable', to: 'users#enable', as: 'enable_user'
 end

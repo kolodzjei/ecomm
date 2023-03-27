@@ -1,0 +1,50 @@
+<div class="container">
+  <h1>Admin Dashboard</h1>
+  <hr>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Orders</h3>
+        </div>
+        <div class="panel-body">
+          <p>View and manage orders</p>
+          <%= link_to "View Orders", orders_path, class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Categories</h3>
+        </div>
+        <div class="panel-body">
+          <p>View and manage categories</p>
+          <%= link_to "View Categories", categories_path, class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Products</h3>
+        </div>
+        <div class="panel-body">
+          <p>View and manage products</p>
+          <%= link_to "View Products", products_path, class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Users</h3>
+        </div>
+        <div class="panel-body">
+          <p>View and manage user accounts</p>
+          <%= link_to "View Users", users_path, class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
