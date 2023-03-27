@@ -40,7 +40,7 @@ RSpec.describe 'Users', type: :request do
     end
 
     it 'returns successful response if logged in' do
-      log_in_user
+      login_as create(:user)
       get profile_path
       expect(response).to have_http_status(200)
     end
