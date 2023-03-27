@@ -24,4 +24,45 @@
       <%= link_to "Add to cart", cart_add_path(@product), data: {"turbo-method": :post}, class: "btn btn-primary" %>
     </div>
   </div>
+
+  <% unless current_user.reviews.find_by(product_id: @product.id) %>
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Add a review</h3>
+      <%= form_with url: reviews_path, model: @review, scope: :review do |f| %>
+        <%= f.hidden_field :product_id, value: @product.id %>
+        <%= f.number_field :rating, class: "form-control", max: 5, min: 1 %>
+        <%= f.text_area :content, class: "form-control" %>
+        <%= f.submit "Submit", class: "btn btn-primary mt-2" %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Reviews</h3>
+      <% if @product.reviews.any? %>
+        <p>
+          <%= @product.average_rating %>/5
+          <span style="font-size: 12px">(<%= @product.reviews.count %> reviews)</span>
+        </p>
+
+        <% @product.reviews.each do |review| %>
+          <div class="card mb-4">
+            <div class="card-body">
+              <p><%= review.content %></p>
+              <p class="text-muted"><%= review.rating%>/5 by <%= review.user.name %>
+                <% if review.user == current_user || current_user.admin? %>
+                  <%= link_to "(delete)", review, data: {"turbo-method": :delete, turbo_confirm: "You sure?"}%>
+                <% end %>
+              </p>
+              <hr>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <p>No reviews yet.</p>
+      <% end %>
+    </div>
+
 </div>

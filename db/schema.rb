@@ -12,12 +12,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 20_230_325_224_408) do
+ActiveRecord::Schema[7.0].define(version: 20_230_327_092_842) do
   create_table 'active_storage_attachments', force: :cascade do |t|
     t.string 'name', null: false
     t.string 'record_type', null: false
-    t.bigint 'record_id', null: false
-    t.bigint 'blob_id', null: false
+    t.integer 'record_id', null: false
+    t.integer 'blob_id', null: false
     t.datetime 'created_at', null: false
     t.index ['blob_id'], name: 'index_active_storage_attachments_on_blob_id'
     t.index %w[record_type record_id name blob_id], name: 'index_active_storage_attachments_uniqueness',
@@ -37,7 +37,7 @@ ActiveRecord::Schema[7.0].define(version: 20_230_325_224_408) do
   end
 
   create_table 'active_storage_variant_records', force: :cascade do |t|
-    t.bigint 'blob_id', null: false
+    t.integer 'blob_id', null: false
     t.string 'variation_digest', null: false
     t.index %w[blob_id variation_digest], name: 'index_active_storage_variant_records_uniqueness', unique: true
   end
@@ -103,6 +103,17 @@ ActiveRecord::Schema[7.0].define(version: 20_230_325_224_408) do
     t.index %w[wishlist_id product_id], name: 'index_products_wishlists_on_wishlist_id_and_product_id'
   end
 
+  create_table 'reviews', force: :cascade do |t|
+    t.integer 'rating', null: false
+    t.string 'content'
+    t.integer 'user_id', null: false
+    t.integer 'product_id', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['product_id'], name: 'index_reviews_on_product_id'
+    t.index ['user_id'], name: 'index_reviews_on_user_id'
+  end
+
   create_table 'users', force: :cascade do |t|
     t.string 'email', null: false
     t.string 'name', null: false
@@ -132,5 +143,7 @@ ActiveRecord::Schema[7.0].define(version: 20_230_325_224_408) do
   add_foreign_key 'items', 'orders'
   add_foreign_key 'items', 'products'
   add_foreign_key 'orders', 'users'
+  add_foreign_key 'reviews', 'products'
+  add_foreign_key 'reviews', 'users'
   add_foreign_key 'wishlists', 'users'
 end

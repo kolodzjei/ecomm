@@ -34,4 +34,5 @@ Rails.application.routes.draw do
   post 'cart/add/:product_id', to: 'items#create', as: 'cart_add'
   delete 'users/:id/disable', to: 'users#disable', as: 'disable_user'
   post 'users/:id/enable', to: 'users#enable', as: 'enable_user'
+  resources :reviews, only: %i[create destroy]
 end

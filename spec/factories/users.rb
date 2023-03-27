@@ -16,4 +16,13 @@ FactoryBot.define do
     confirmed_at { Time.zone.now }
     admin { true }
   end
+
+  factory :user2, class: User do
+    name { 'John Doe' }
+    email { 'user@example.com' }
+    password { 'password' }
+    password_confirmation { 'password' }
+    confirmed_at { Time.zone.now }
+    admin { false }
+  end
 end

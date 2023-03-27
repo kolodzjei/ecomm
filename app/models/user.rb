@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_one :wishlist, dependent: :destroy
   has_one :cart, dependent: :destroy
   has_many :orders, dependent: :destroy
+  has_many :reviews, dependent: :destroy
   has_secure_password
   has_secure_token :remember_token
   attr_accessor :current_password
