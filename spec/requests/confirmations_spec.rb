@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Confirmations', type: :request do
+  let(:user) { create(:user) }
+
   describe 'GET /confirmations/new' do
     it 'returns successful response' do
       get new_confirmation_path
@@ -10,7 +12,7 @@ RSpec.describe 'Confirmations', type: :request do
     end
 
     it 'redirects to root if logged in' do
-      log_in_user
+      login_as user
       get new_confirmation_path
       expect(response).to redirect_to root_path
       expect(flash[:alert]).to eq('You are already logged in.')
@@ -32,7 +34,6 @@ RSpec.describe 'Confirmations', type: :request do
     end
 
     it 'does not send confirmation email if user is already confirmed' do
-      user = create(:user)
       post confirmations_path, params: { user: { email: user.email } }
       expect(response).to redirect_to new_confirmation_path
       expect(flash[:alert]).to eq('We could not find a user with that email or that email has already been confirmed.')

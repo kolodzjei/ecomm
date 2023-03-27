@@ -36,8 +36,7 @@ RSpec.describe 'Users', type: :request do
     it 'redirects to login page if not logged in' do
       get profile_path
       expect(response).to redirect_to login_path
-      # expect(flash[:error]).to eq('You must be logged in to do that')
-      # expect(response.body).to include('You must be logged in to do that')
+      expect(flash[:alert]).to eq('You must be logged in to do that.')
     end
 
     it 'returns successful response if logged in' do
@@ -48,11 +47,10 @@ RSpec.describe 'Users', type: :request do
   end
 
   describe 'PUT /profile' do
-    before :each do
-      log_in_user
-    end
+    let(:user) { create(:user) }
 
     it 'does not update credentials with invalid current password' do
+      login_as user
       put profile_path,
           params: { user: { current_password: 'wrong', password: 'newpassword', password_confirmation: 'newpassword' } }
       expect(response).to have_http_status(422)
@@ -60,28 +58,33 @@ RSpec.describe 'Users', type: :request do
     end
 
     it 'updates credentials with valid current password' do
+      login_as user
       put profile_path,
-          params: { user: { current_password: 'password', password: 'newpassword',
+          params: { user: { current_password: user.password, password: 'newpassword',
                             password_confirmation: 'newpassword' } }
       expect(response).to redirect_to root_path
       expect(flash[:notice]).to eq('Your account has been updated.')
     end
 
     it 'does not update credentials with invalid new password' do
+      login_as user
       put profile_path,
-          params: { user: { current_password: 'password', password: 'new', password_confirmation: 'new' } }
+          params: { user: { current_password: user.password, password: 'new', password_confirmation: 'new' } }
       expect(response).to have_http_status(422)
     end
 
     it 'does not update credentials with mismatched new password' do
+      login_as user
       put profile_path,
-          params: { user: { current_password: 'password', password: 'newpassword',
+          params: { user: { current_password: user.password, password: 'newpassword',
                             password_confirmation: 'newpassword1' } }
       expect(response).to have_http_status(422)
     end
 
     it 'updates email with valid current password' do
-      put profile_path, params: { user: { current_password: 'password', unconfirmed_email: 'user-second@example.com' } }
+      login_as user
+      put profile_path,
+          params: { user: { current_password: user.password, unconfirmed_email: 'user-second@example.com' } }
       expect(response).to redirect_to root_path
       expect(current_user.reconfirming?).to be true
       expect(current_user.unconfirmed_email).to eq 'user-second@example.com'

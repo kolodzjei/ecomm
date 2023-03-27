@@ -3,6 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Categories', type: :request do
+  let(:user) { create(:user) }
+  let(:admin) { create(:admin) }
+  let(:category) { create(:category) }
   describe 'GET /categories' do
     it 'redirects to login page if not logged in' do
       get categories_path
@@ -10,13 +13,13 @@ RSpec.describe 'Categories', type: :request do
     end
 
     it 'redirects to root if not admin' do
-      log_in_user
+      login_as user
       get categories_path
       expect(response).to redirect_to(root_path)
     end
 
     it 'returns http success if admin' do
-      log_in_admin
+      login_as admin
       get categories_path
       expect(response).to have_http_status(:success)
     end
@@ -29,13 +32,13 @@ RSpec.describe 'Categories', type: :request do
     end
 
     it 'redirects to root if not admin' do
-      log_in_user
+      login_as user
       get new_category_path
       expect(response).to redirect_to(root_path)
     end
 
     it 'returns http success if admin' do
-      log_in_admin
+      login_as admin
       get new_category_path
       expect(response).to have_http_status(:success)
     end
@@ -48,13 +51,13 @@ RSpec.describe 'Categories', type: :request do
     end
 
     it 'redirects to root if not admin' do
-      log_in_user
+      login_as user
       post categories_path
       expect(response).to redirect_to(root_path)
     end
 
     it 'creates a category if admin' do
-      log_in_admin
+      login_as admin
       post categories_path, params: { category: { name: 'test' } }
       expect(response).to redirect_to(categories_path)
       expect(Category.last.name).to eq('test')
@@ -62,73 +65,99 @@ RSpec.describe 'Categories', type: :request do
   end
 
   describe 'GET /categories/:id/edit' do
-    before :each do
-      @category = Category.create(name: 'test')
-    end
-
     it 'redirects to login page if not logged in' do
-      get edit_category_path(@category)
+      get edit_category_path(category)
       expect(response).to redirect_to(login_path)
     end
 
     it 'redirects to root if not admin' do
-      log_in_user
-      get edit_category_path(@category)
+      login_as user
+      get edit_category_path(category)
       expect(response).to redirect_to(root_path)
     end
 
     it 'returns http success if admin' do
-      log_in_admin
-      get edit_category_path(@category)
+      login_as admin
+      get edit_category_path(category)
       expect(response).to have_http_status(:success)
     end
   end
 
   describe 'PATCH /categories/:id' do
-    before :each do
-      @category = Category.create(name: 'test')
-    end
-
     it 'redirects to login page if not logged in' do
-      patch category_path(@category)
+      patch category_path(category)
       expect(response).to redirect_to(login_path)
     end
 
+    it 'does not update a category if not logged in' do
+      expect do
+        patch category_path(category), params: { category: { name: 'test2' } }
+      end.to_not change { category.name }
+    end
+
     it 'redirects to root if not admin' do
-      log_in_user
-      patch category_path(@category)
+      login_as user
+      patch category_path(category)
       expect(response).to redirect_to(root_path)
     end
 
-    it 'updates a category if admin' do
-      log_in_admin
-      patch category_path(@category), params: { category: { name: 'test2' } }
+    it 'does not update a category if not admin' do
+      category
+      login_as user
+      expect do
+        patch category_path(category), params: { category: { name: 'test2' } }
+      end.to_not change { category.name }
+    end
+
+    it 'redirects to categories if admin' do
+      category
+      login_as admin
+      patch category_path(category), params: { category: { name: 'test2' } }
       expect(response).to redirect_to(categories_path)
-      expect(Category.last.name).to eq('test2')
+    end
+
+    it 'updates a category if admin' do
+      category
+      login_as admin
+      expect do
+        patch category_path(category), params: { category: { name: 'test2' } }
+      end.to change { category.reload.name }.from('Test category').to('test2')
     end
   end
 
   describe 'DELETE /categories/:id' do
-    before :each do
-      @category = Category.create(name: 'test')
-    end
-
     it 'redirects to login page if not logged in' do
-      delete category_path(@category)
+      delete category_path(category)
       expect(response).to redirect_to(login_path)
     end
 
+    it 'does not delete a category if not logged in' do
+      category
+      expect { delete category_path(category) }.to_not change(Category, :count)
+    end
+
     it 'redirects to root if not admin' do
-      log_in_user
-      delete category_path(@category)
+      login_as user
+      delete category_path(category)
       expect(response).to redirect_to(root_path)
     end
 
-    it 'deletes a category if admin' do
-      log_in_admin
-      delete category_path(@category)
+    it 'does not delete a category if not admin' do
+      category
+      login_as user
+      expect { delete category_path(category) }.to_not change(Category, :count)
+    end
+
+    it 'redirects to categories if admin' do
+      login_as admin
+      delete category_path(category)
       expect(response).to redirect_to(categories_path)
-      expect(Category.count).to eq(0)
+    end
+
+    it 'deletes a category if admin' do
+      category
+      login_as admin
+      expect { delete category_path(category) }.to change(Category, :count).by(-1)
     end
   end
 end

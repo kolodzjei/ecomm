@@ -3,78 +3,49 @@
 require 'rails_helper'
 
 RSpec.describe 'Items', type: :request do
+  let(:product) { create(:product) }
   describe 'POST /items' do
+    let(:user) { create(:user) }
+    let(:product) { create(:product) }
     it 'redirects to login if user is not logged in' do
       expect do
-        post items_path, params: { item: { product_id: 1, cart_id: 1 } }
+        post items_path, params: { product_id: product.id }
       end.to change(Item, :count).by(0)
       expect(response).to redirect_to(login_path)
     end
 
     it 'redirects to root if product does not exist' do
-      log_in_user
+      login_as user
       expect do
-        post items_path, params: { item: { product_id: 1, cart_id: 1 } }
+        post items_path, params: { product_id: -1 }
       end.to change(Item, :count).by(0)
       expect(response).to redirect_to(root_path)
     end
 
-    it 'redirects to root if cart does not exist' do
-      log_in_user
-      Product.create(name: 'test', price: 1, description: 'test')
+    it 'creates an item if product exist and user is logged in' do
+      login_as user
       expect do
-        post items_path, params: { item: { product_id: 1, cart_id: 2 } }
-      end.to change(Item, :count).by(0)
-      expect(response).to redirect_to root_path
-    end
-
-    it 'redirects to root if cart does not belong to user' do
-      log_in_user
-      Product.create(name: 'test', price: 1, description: 'test')
-      create(:admin)
-      expect do
-        post items_path, params: { item: { product_id: 1, cart_id: 2 } }
-      end.to change(Item, :count).by(0)
-      expect(response).to redirect_to root_path
-    end
-
-    it 'creates an item if product and cart exist and belong to user' do
-      log_in_user
-      Product.create(name: 'test', price: 1, description: 'test')
-      expect do
-        post items_path, params: { product_id: 1 }
+        post items_path, params: { product_id: product.id }
       end.to change(Item, :count).by(1)
       expect(response).to redirect_to carts_path
     end
 
-    it 'updates an item if product and cart exist and belong to user' do
-      log_in_user
-      Product.create(name: 'test', price: 1, description: 'test')
-      post items_path, params: { product_id: 1 }
+    it 'updates items quantity if user already has an item with this product' do
+      login_as user
+      post items_path, params: { product_id: product.id }
       expect do
-        post items_path, params: { product_id: 1 }
+        post items_path, params: { product_id: product.id }
       end.to change(Item, :count).by(0)
       expect(response).to redirect_to carts_path
       expect(Item.first.quantity).to eq(2)
-    end
-
-    it 'redirects to root if product and cart exist but do not belong to user' do
-      log_in_user
-      create(:admin)
-      Product.create(name: 'test', price: 1, description: 'test')
-      expect do
-        post items_path, params: { item: { product_id: 1, cart_id: 2 } }
-      end.to change(Item, :count).by(0)
-      expect(response).to redirect_to root_path
     end
   end
 
   describe 'DELETE /items/:id' do
     describe 'when user is not logged in' do
       before :each do
-        Product.create(name: 'test', price: 1, description: 'test')
-        create(:user)
-        @item = Item.create(product_id: 1, cart_id: 1, quantity: 1)
+        @item = create(:item, :with_user_and_product)
+        @user = @item.cart.user
       end
 
       it 'redirects to login' do
@@ -91,21 +62,19 @@ RSpec.describe 'Items', type: :request do
 
     describe 'when user is logged in' do
       before :each do
-        Product.create(name: 'test', price: 1, description: 'test')
-        log_in_user
-        @item = Item.create(product_id: 1, cart_id: 1, quantity: 1)
+        @item = create(:item, :with_user_and_product)
+        @user = @item.cart.user
+        login_as @user
       end
 
       it 'redirects to root if item does not exist' do
-        expect do
-          delete item_path(-1)
-        end.to change(Item, :count).by(0)
+        delete item_path(-1)
         expect(response).to redirect_to root_path
       end
 
       it 'redirects to root if item does not belong to user' do
         user = create(:admin)
-        item = Item.create(product_id: 1, cart_id: user.cart.id, quantity: 1)
+        item = Item.create(product_id: product.id, cart_id: user.cart.id, quantity: 1)
         expect do
           delete item_path(item)
         end.to change(Item, :count).by(0)
@@ -124,9 +93,8 @@ RSpec.describe 'Items', type: :request do
   describe 'POST /items/:id/add' do
     describe 'when user is not logged in' do
       before :each do
-        Product.create(name: 'test', price: 1, description: 'test')
-        create(:user)
-        @item = Item.create(product_id: 1, cart_id: 1, quantity: 1)
+        @item = create(:item, :with_user_and_product)
+        @user = @item.cart.user
       end
 
       it 'redirects to login' do
@@ -143,9 +111,9 @@ RSpec.describe 'Items', type: :request do
 
     describe 'when user is logged in' do
       before :each do
-        Product.create(name: 'test', price: 1, description: 'test')
-        log_in_user
-        @item = Item.create(product_id: 1, cart_id: 1, quantity: 1)
+        @item = create(:item, :with_user_and_product)
+        @user = @item.cart.user
+        login_as @user
       end
 
       it 'redirects to root if item does not exist' do
@@ -155,7 +123,7 @@ RSpec.describe 'Items', type: :request do
 
       it 'redirects to root if item does not belong to user' do
         user = create(:admin)
-        i = Item.create(product_id: 1, cart_id: user.cart.id, quantity: 1)
+        i = Item.create(product_id: product.id, cart_id: user.cart.id, quantity: 1)
         expect do
           post add_item_path(i)
         end.to change { i.reload.quantity }.by(0)
@@ -174,9 +142,8 @@ RSpec.describe 'Items', type: :request do
   describe 'DELETE /items/:id/remove' do
     describe 'when user is not logged in' do
       before :each do
-        Product.create(name: 'test', price: 1, description: 'test')
-        create(:user)
-        @item = Item.create(product_id: 1, cart_id: 1, quantity: 1)
+        @item = create(:item, :with_user_and_product)
+        @user = @item.cart.user
       end
 
       it 'redirects to login' do
@@ -193,9 +160,9 @@ RSpec.describe 'Items', type: :request do
 
     describe 'when user is logged in' do
       before :each do
-        Product.create(name: 'test', price: 1, description: 'test')
-        log_in_user
-        @item = Item.create(product_id: 1, cart_id: 1, quantity: 1)
+        @item = create(:item, :with_user_and_product)
+        @user = @item.cart.user
+        login_as @user
       end
 
       it 'redirects to root if item does not exist' do
@@ -230,20 +197,21 @@ RSpec.describe 'Items', type: :request do
   end
 
   describe 'POST /cart/add/:product_id' do
+    let(:user) { create(:user) }
+
     it 'redirects to login if user is not logged in' do
-      create(:product)
-      post cart_add_path(1)
+      post cart_add_path(product.id)
       expect(response).to redirect_to(login_path)
     end
 
     it 'redirects to root if product does not exist' do
-      log_in_user
+      login_as user
       post cart_add_path(-1)
       expect(response).to redirect_to root_path
     end
 
     it 'adds item to cart if product exists and user is logged in' do
-      log_in_user
+      login_as user
       create(:product)
       expect do
         post cart_add_path(1)

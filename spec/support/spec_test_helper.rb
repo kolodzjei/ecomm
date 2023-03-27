@@ -19,7 +19,7 @@ module SpecTestHelper
                      end
   end
 
-  def log_in_as(user)
+  def login_as(user)
     post login_path, params: { user: { email: user.email, password: user.password } }
   end
 

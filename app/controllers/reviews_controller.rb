@@ -19,8 +19,13 @@ class ReviewsController < ApplicationController
 
   def destroy
     @review = Review.find_by(id: params[:id])
-    redirect_to root_path, alert: 'Access denied.' unless @review.user == current_user || current_user.admin?
-    @review.destroy
+
+    if @review.user == current_user || current_user.admin?
+      flash[:notice] = 'Review deleted successfully'
+      @review.destroy
+    else
+      flash[:alert] = 'Access denied.'
+    end
     redirect_to product_path(@review.product)
   end
 

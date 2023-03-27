@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Passwords', type: :request do
+  let(:user) { create(:user) }
   describe 'GET /passwords/new' do
     it 'returns http success' do
       get new_password_path
@@ -10,7 +11,7 @@ RSpec.describe 'Passwords', type: :request do
     end
 
     it 'redirects to root if logged in' do
-      log_in_user
+      login_as user
       get new_password_path
       expect(response).to redirect_to root_path
       expect(flash[:alert]).to eq('You are already logged in.')
@@ -19,7 +20,6 @@ RSpec.describe 'Passwords', type: :request do
 
   describe 'POST /passwords' do
     it 'sends password reset email if user exists' do
-      user = create(:user)
       post passwords_path, params: { user: { email: user.email } }
       expect(response).to redirect_to root_path
       expect(flash[:notice]).to eq('Check your email for password reset instructions.')
@@ -43,7 +43,6 @@ RSpec.describe 'Passwords', type: :request do
 
   describe 'GET /passwords/:password_reset_token/edit' do
     it 'renders edit template if token is valid' do
-      user = create(:user)
       mail = user.send_password_reset_email!
       get edit_password_path(mail.body.parts[0].body.raw_source.split('/')[-2])
       expect(response).to have_http_status(:success)
@@ -56,10 +55,10 @@ RSpec.describe 'Passwords', type: :request do
     end
 
     it 'redirects if user is not confirmed' do
-      user = User.create(name: 'userexample', email: 'userexample@example.com', password: 'password',
-                         password_confirmation: 'password')
+      example = User.create(name: 'userexample', email: 'userexample@example.com', password: 'password',
+                            password_confirmation: 'password')
 
-      mail = user.send_password_reset_email!
+      mail = example.send_password_reset_email!
       get edit_password_path(mail.body.parts[0].body.raw_source.split('/')[-2])
       expect(response).to redirect_to new_confirmation_path
       expect(flash[:alert]).to eq('Please confirm your email first.')
