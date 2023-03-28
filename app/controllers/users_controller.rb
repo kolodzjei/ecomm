@@ -25,6 +25,7 @@ class UsersController < ApplicationController
 
   def edit
     @user = current_user
+    @pagy, @orders = pagy(current_user.orders, items: 5)
   end
 
   def update

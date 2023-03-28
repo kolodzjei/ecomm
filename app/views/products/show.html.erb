@@ -19,8 +19,18 @@
     </div>
     <div class="col-md-7">
       <h2><%= @product.name %></h2>
-      <p class="lead"><%= number_to_currency(@product.price) %></p>
-      <p><%= @product.description %></p>
+      <table class="table">
+        <tbody>
+          <tr>
+            <th scope="row">Price:</th>
+            <td><%= number_to_currency(@product.price) %></td>
+          </tr>
+          <tr>
+            <th scope="row">Description:</th>
+            <td><%= @product.description %></td>
+          </tr>
+        </tbody>
+      </table>
       <%= link_to "Add to cart", cart_add_path(@product), data: {"turbo-method": :post}, class: "btn btn-primary" %>
     </div>
   </div>
@@ -31,8 +41,14 @@
       <h3>Add a review</h3>
       <%= form_with url: reviews_path, model: @review, scope: :review do |f| %>
         <%= f.hidden_field :product_id, value: @product.id %>
-        <%= f.number_field :rating, class: "form-control", max: 5, min: 1 %>
-        <%= f.text_area :content, class: "form-control" %>
+        <div class="mb-3">
+          <%= f.label :rating, class: "form-label" %>
+          <%= f.number_field :rating, class: "form-control", max: 5, min: 1 %>
+        </div>
+        <div class="mb-3">
+          <%= f.label :content, class: "form-label" %>
+          <%= f.text_area :content, class: "form-control" %>
+        </div>
         <%= f.submit "Submit", class: "btn btn-primary mt-2" %>
       <% end %>
     </div>
@@ -44,7 +60,7 @@
       <% if @product.reviews.any? %>
         <p>
           <%= @product.average_rating %>/5
-          <span style="font-size: 12px">(<%= @product.reviews.count %> reviews)</span>
+          <span style="font-size: 12px">(<%= pluralize @product.reviews.count, "review" %>)</span>
         </p>
 
         <% @product.reviews.each do |review| %>
@@ -52,17 +68,17 @@
             <div class="card-body">
               <p><%= review.content %></p>
               <p class="text-muted"><%= review.rating%>/5 by <%= review.user.name %>
-                <% if review.user == current_user || current_user.admin? %>
-                  <%= link_to "(delete)", review, data: {"turbo-method": :delete, turbo_confirm: "You sure?"}%>
-                <% end %>
-              </p>
-              <hr>
-            </div>
-          </div>
-        <% end %>
-      <% else %>
-        <p>No reviews yet.</p>
-      <% end %>
-    </div>
-
+                <% if review.user == current_user %>
+              <%= link_to "(delete)", review, data: {"turbo-method": :delete, turbo_confirm: "You sure?"}, style: "font-size:14px;" %>
+            <% end %>
+          </p>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <p>No reviews yet</p>
+  <% end %>
+</div>
+</div>
+</div>
 </div>

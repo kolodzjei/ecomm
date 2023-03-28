@@ -1,45 +1,45 @@
-<div class="container">
+<div class="container mt-5">
   <div class="row">
     <div class="col-md-3">
-      <h3>Categories</h3>
-      <div class="form-group">
+      <h4 class="mb-4">Categories</h4>
       <%= form_tag root_path, method: :get do %>
-        <div class="checkbox-list">
-          <% Category.all.each do |category| %>
-            <div class="checkbox">
-              <%= check_box_tag "category_ids[]", category.id, params[:category_ids]&.include?(category.id.to_s), id: "category-#{category.id}" %>
-              <%= label_tag "category-#{category.id}", category.name %>
-            </div>
-          <% end %>
+    <div class="checkbox-list">
+      <% Category.all.each do |category| %>
+        <div class="checkbox">
+          <%= check_box_tag "category_ids[]", category.id, params[:category_ids]&.include?(category.id.to_s), id: "category-#{category.id}" %>
+          <%= label_tag "category-#{category.id}", category.name %>
         </div>
-        <%= submit_tag "Filter", class: "btn btn-primary" %>
-        <% if params[:search].present? %>
-          <%= hidden_field_tag "search", params[:search] %>
-        <% end %>
       <% end %>
-
-      </div>
+    </div>
+    <div class="d-grid gap-2">
+      <%= submit_tag "Filter", class: "btn btn-primary" %>
+    </div>
+        <% if params[:search].present? %>
+        <%= hidden_field_tag "search", params[:search] %>
+      <% end %>
+    <% end %>
     </div>
     <div class="col-md-9">
-      <h2>Products</h2>
-      <div class="row">
+      <div class="row row-cols-1 row-cols-md-3 g-4">
         <% @products.each do |product| %>
-          <div class="col-md-4">
-            <div class="thumbnail">
-              <a href="<%= product_path(product) %>">
+        <div class="col">
+          <div class="card h-100">
+            <a href="<%= product_path(product) %>">
                 <% if product.image.attached? %>
-                  <%= image_tag product.image.variant(:thumb), class:"img-responsive"%>
+                  <%= image_tag product.image.variant(:thumb), class:"card-img-top"%>
                 <% end %>
               </a>
-              <div class="caption">
-                <h3><%= product.name %></h3>
-                <p><%= number_to_currency(product.price) %></p>
-                <p><%= product.description[0..10] %></p>
-              </div>
+            <div class="card-body">
+              <h5 class="card-title"><%= link_to product.name, product %></h5>
+              <p class="card-text"><%= truncate(product.description, length: 100) %></p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted"><%= number_to_currency(product.price) %></small>
             </div>
           </div>
+        </div>
         <% end %>
-        <%== pagy_nav(@pagy) %>
+        <%== pagy_bootstrap_nav(@pagy) %>
       </div>
     </div>
   </div>

@@ -5,7 +5,7 @@ class WishlistsController < ApplicationController
 
   def index
     @wishlist = current_user.wishlist
-    @products = @wishlist.products
+    @pagy, @products = pagy(@wishlist.products, items: 10)
   end
 
   def create

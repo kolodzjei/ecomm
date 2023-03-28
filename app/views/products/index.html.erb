@@ -1,4 +1,38 @@
-<h1>Products</h1>
-<%= link_to "New", new_product_path, class: "btn btn-success", style:"margin: 20px;"%>
-<%= render @products %>
-<%== pagy_nav(@pagy) %>
+<div class="container mt-4">
+  <h1 class="mb-4">All products</h1>
+  <%= link_to "New", new_product_path, class: "btn btn-success", style:"margin: 20px;"%>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Price</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @products.each do |product| %>
+          <tr>
+            <td>
+              <a href="<%= product_path(product) %>">
+                <%= product.name %>
+              </a>
+            </td>
+            <td>$<%= product.price %></td>
+
+
+            <td>
+            <%= link_to "View Order", product_path(product), class: "btn btn-primary" %>
+            <%= link_to "Edit", edit_product_path(product), class: "btn btn-warning" %>
+            <%= link_to "Destroy", product, data: {"turbo-method": :delete, turbo_confirm: "You sure?"},class: "btn btn-danger" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%== pagy_bootstrap_nav(@pagy) %>
+  </div>
+</div>
+
+
+
