@@ -20,9 +20,13 @@ class OrdersController < ApplicationController
       item.save
     end
 
-    @order.save
-    flash[:success] = 'Order placed successfully'
-    redirect_to @order
+    if @order.save
+      OrdersConfirmationJob.perform_async(@order.id)
+      flash[:success] = 'Order placed successfully'
+      redirect_to @order
+    else
+      render :new
+    end
   end
 
   def show
