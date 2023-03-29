@@ -22,6 +22,7 @@ class OrdersController < ApplicationController
 
     if @order.save
       OrdersConfirmationJob.perform_async(@order.id)
+      CancelUnpaidOrderJob.perform_in(15.minutes, @order.id)
       flash[:success] = 'Order placed successfully'
       redirect_to @order
     else

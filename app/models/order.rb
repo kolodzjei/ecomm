@@ -20,6 +20,11 @@ class Order < ApplicationRecord
     self.status = :cancelled
   end
 
+  def cancel!
+    cancel
+    save
+  end
+
   def ship
     self.status = :shipped
   end
@@ -30,5 +35,9 @@ class Order < ApplicationRecord
 
   def pay
     self.status = :paid
+  end
+
+  def paid?
+    status == 'paid'
   end
 end
