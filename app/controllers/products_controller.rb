@@ -46,6 +46,14 @@ class ProductsController < ApplicationController
   def update
     @product = Product.find_by(id: params[:id])
     @product.update(product_params)
+
+    @product.categories.clear
+    unless params[:product][:category_ids].nil?
+      params[:product][:category_ids][1..].each do |category_id|
+        @product.categories << Category.find_by(id: category_id)
+      end
+    end
+  
     if @product.save
       flash[:success] = 'Product updated'
       redirect_to @product
