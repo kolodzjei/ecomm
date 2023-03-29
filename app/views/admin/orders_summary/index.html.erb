@@ -1,0 +1,146 @@
+<div class="container-fluid">
+  <h1 class="mb-4">Orders Summary</h1>
+    <a id="download-csv" class="btn btn-primary btn-sm">Download Orders CSV</a>
+  
+  <%= form_tag admin_summary_path, method: :get, class: "mb-3" do %>
+    <div class="row">
+      <div class="col-md-3">
+        <%= label_tag "start_date", "Start Date" %>
+        <%= date_field_tag "start_date", params[:start_date] || @start_date, class: "form-control" %>
+      </div>
+      <div class="col-md-3">
+        <%= label_tag "end_date", "End Date" %>
+        <%= date_field_tag "end_date", params[:end_date] || @end_date, class: "form-control" %>
+      </div>
+      <div class="col-md-3">
+        <%= submit_tag "Filter", class: "btn btn-primary mt-4" %>
+      </div>
+    </div>
+  <% end %>
+  
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">All orders</h5>
+          <p class="card-text"><%= @orders.count %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Total</h5>
+          <p class="card-text"><%= number_to_currency(@orders.map(&:total).sum) %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Average Order Value</h5>
+          <p class="card-text">
+          <% if @orders.count.positive? %>
+            <%= number_to_currency(@orders.map(&:total).sum / @orders.count) %>
+          <% else%>
+            <%= number_to_currency(0) %>
+          <% end %>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title" style="color: red">Cancelled orders</h5>
+          <p class="card-text"><%= @cancelled_orders.count %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title" style="color: red">Cancelled Total</h5>
+          <p class="card-text"><%= number_to_currency(@cancelled_orders.map(&:total).sum) %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title" style="color: red">Average Cancelled Order Value</h5>
+          <p class="card-text">
+          <% if @cancelled_orders.count.positive? %>
+            <%= number_to_currency(@cancelled_orders.map(&:total).sum / @cancelled_orders.count) %>
+          <% else%>
+            <%= number_to_currency(0) %>
+          <% end %>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Pending orders</h5>
+          <p class="card-text"><%= @pending_orders.count %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Pending Total</h5>
+          <p class="card-text"><%= number_to_currency(@pending_orders.map(&:total).sum) %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Average Pending Order Value</h5>
+          <p class="card-text">
+          <% if @pending_orders.count.positive? %>
+            <%= number_to_currency(@pending_orders.map(&:total).sum / @pending_orders.count) %>
+          <% else%>
+            <%= number_to_currency(0) %>
+          <% end %>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title" style="color: green">Successful orders</h5>
+          <p class="card-text"><%= @other_orders.count %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title" style="color: green">Successful Total</h5>
+          <p class="card-text"><%= number_to_currency(@other_orders.map(&:total).sum) %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title" style="color: green">Average Successful Order Value</h5>
+          <p class="card-text">
+          <% if @other_orders.count.positive? %>
+            <%= number_to_currency(@other_orders.map(&:total).sum / @other_orders.count) %>
+          <% else%>
+            <%= number_to_currency(0) %>
+          <% end %>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

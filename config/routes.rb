@@ -3,6 +3,10 @@
 Rails.application.routes.draw do
   namespace :admin do
     get 'dashboard', to: 'dashboard#index', as: 'dashboard'
+    get 'summary', to: 'orders_summary#index', as: 'summary'
+    post 'summary/download_csv', to: 'orders_summary#download_csv', as: 'download_csv'
+    get 'summary/check_job_status', to: 'orders_summary#check_job_status', as: 'check_job_status'
+    get 'summary/download_orders_csv', to: 'orders_summary#download_orders_csv', as: 'download_orders_csv'
   end
   resources :users, only: %i[index]
   root 'static_pages#home'
