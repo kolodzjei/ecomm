@@ -41,6 +41,6 @@ class Order < ApplicationRecord
   private
 
   def set_total
-    self.total = items.map(&:total_price).sum
+    self.total = items.map(&:total_price).sum if total.nil?
   end
 end

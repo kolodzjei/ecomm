@@ -7,3 +7,4 @@ import "popper"
 import "bootstrap"
 import 'custom/image_size'
 import 'custom/download_csv'
+import 'custom/alerts'

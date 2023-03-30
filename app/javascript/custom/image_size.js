@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).on('turbo:load',function() {
   $('input[type="file"]').change(function(e){
     var fileSize = this.files[0].size;
     var maxSize = 5 * 1024 * 1024; // 5MB

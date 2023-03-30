@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).on('turbo:load',function() {
   var downloadButton = $('#download-csv');
   var downloadLink = $('<a class="btn btn-success btn-sm">Download CSV</a>')
   downloadButton.click(function() {
