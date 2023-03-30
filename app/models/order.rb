@@ -11,10 +11,7 @@ class Order < ApplicationRecord
   validates :shipping_city, presence: true
   validates :shipping_name, presence: true
   validates :status, presence: true
-
-  def total
-    items.map(&:total_price).sum
-  end
+  before_save :set_total
 
   def cancel
     self.status = :cancelled
@@ -39,5 +36,11 @@ class Order < ApplicationRecord
 
   def paid?
     status != 'pending' && status != 'cancelled'
+  end
+
+  private
+
+  def set_total
+    self.total = items.map(&:total_price).sum
   end
 end
