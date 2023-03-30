@@ -1,5 +1,6 @@
 $(document).ready(function() {
   var downloadButton = $('#download-csv');
+  var downloadLink = $('<a class="btn btn-success btn-sm">Download CSV</a>')
   downloadButton.click(function() {
 
     downloadButton.off('click');
@@ -33,14 +34,12 @@ $(document).ready(function() {
         success: function(data) {
           if (data.status == 'complete') {
             clearInterval(interval);
-            downloadButton.html('Download CSV');
-            downloadButton.prop('disabled', false);
-            downloadButton.attr('href', data.download_url);
-            downloadButton.off('click');
+            downloadButton.replaceWith(downloadLink);
+            downloadLink.attr('href', data.download_url);
             setTimeout(function() {
+              downloadLink.replaceWith(downloadButton);
               downloadButton.html('Download expired');
               downloadButton.prop('disabled', true);
-              downloadButton.attr('href', '#');
             }, 60000);
           }
         }

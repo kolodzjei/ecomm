@@ -53,7 +53,7 @@ class ProductsController < ApplicationController
         @product.categories << Category.find_by(id: category_id)
       end
     end
-  
+
     if @product.save
       flash[:success] = 'Product updated'
       redirect_to @product

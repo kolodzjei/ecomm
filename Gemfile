@@ -84,4 +84,4 @@ end
 
 gem 'sidekiq', '~> 7.0'
 
-gem "sidekiq-status", "~> 3.0"
+gem 'sidekiq-status', '~> 3.0'

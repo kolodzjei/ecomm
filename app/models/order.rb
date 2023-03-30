@@ -38,6 +38,6 @@ class Order < ApplicationRecord
   end
 
   def paid?
-    status == 'paid'
+    status != 'pending' && status != 'cancelled'
   end
 end
