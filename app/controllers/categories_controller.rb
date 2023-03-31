@@ -19,28 +19,28 @@ class CategoriesController < ApplicationController
   def create
     @category = Category.new(category_params)
     if @category.save
-      flash[:success] = 'Category created successfully'
+      flash[:success] = "Category created successfully"
     else
-      flash[:danger] = 'Category not created'
+      flash[:danger] = "Category not created"
     end
-    redirect_to categories_path
+    redirect_to(categories_path)
   end
 
   def destroy
     @category = Category.find_by(id: params[:id])
     @category.destroy
-    flash[:success] = 'Category deleted successfully'
-    redirect_to categories_path
+    flash[:success] = "Category deleted successfully"
+    redirect_to(categories_path)
   end
 
   def update
     @category = Category.find_by(id: params[:id])
     if @category.update(category_params)
-      flash[:success] = 'Category updated successfully'
-      redirect_to categories_path
+      flash[:success] = "Category updated successfully"
+      redirect_to(categories_path)
     else
-      flash[:danger] = 'Category not updated'
-      render 'edit'
+      flash[:danger] = "Category not updated"
+      render("edit")
     end
   end
 

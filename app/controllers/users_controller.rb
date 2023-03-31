@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: %i[edit update destroy index disable]
-  before_action :authenticate_admin!, only: %i[index disable]
+  before_action :authenticate_user!, only: [:edit, :update, :destroy, :index, :disable]
+  before_action :authenticate_admin!, only: [:index, :disable]
 
   def index
     @pagy, @users = pagy(User.all, items: 20)
@@ -17,9 +17,9 @@ class UsersController < ApplicationController
 
     if @user.save
       @user.send_confirmation_email!
-      redirect_to root_path, notice: 'Please check your email for confirmation instructions.'
+      redirect_to(root_path, notice: "Please check your email for confirmation instructions.")
     else
-      render :new, status: :unprocessable_entity
+      render(:new, status: :unprocessable_entity)
     end
   end
 
@@ -34,31 +34,31 @@ class UsersController < ApplicationController
       if @user.update(update_user_params)
         if params[:user][:unconfirmed_email].present?
           @user.send_confirmation_email!
-          redirect_to root_path, notice: 'Please check your email for confirmation instructions.'
+          redirect_to(root_path, notice: "Please check your email for confirmation instructions.")
         else
-          redirect_to root_path, notice: 'Your account has been updated.'
+          redirect_to(root_path, notice: "Your account has been updated.")
         end
       else
-        render :edit, status: :unprocessable_entity
+        render(:edit, status: :unprocessable_entity)
       end
     else
-      flash.now[:error] = 'Incorrect password'
-      render :edit, status: :unprocessable_entity
+      flash.now[:error] = "Incorrect password"
+      render(:edit, status: :unprocessable_entity)
     end
   end
 
   def disable
     @user = User.find_by(id: params[:id])
     @user.update_attribute(:disabled, true)
-    flash[:notice] = 'User disabled'
-    redirect_to users_path
+    flash[:notice] = "User disabled"
+    redirect_to(users_path)
   end
 
   def enable
     @user = User.find_by(id: params[:id])
     @user.update_attribute(:disabled, false)
-    flash[:notice] = 'User unlocked'
-    redirect_to users_path
+    flash[:notice] = "User unlocked"
+    redirect_to(users_path)
   end
 
   private

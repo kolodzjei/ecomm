@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :review do
     rating { 5 }
-    content { 'Great product' }
+    content { "Great product" }
 
     trait :with_specific_user_and_product do
       transient do

@@ -8,10 +8,12 @@ class PasswordsController < ApplicationController
   def edit
     @user = User.find_signed(params[:password_reset_token], purpose: :reset_password)
     if @user.present? && @user.unconfirmed?
-      redirect_to new_confirmation_path,
-                  alert: 'Please confirm your email first.'
+      redirect_to(
+        new_confirmation_path,
+        alert: "Please confirm your email first.",
+      )
     elsif @user.nil?
-      redirect_to new_password_path, alert: 'Invalid token.'
+      redirect_to(new_password_path, alert: "Invalid token.")
     end
   end
 
@@ -20,13 +22,15 @@ class PasswordsController < ApplicationController
     if @user.present?
       if @user.confirmed?
         @user.send_password_reset_email!
-        redirect_to root_path, notice: 'Check your email for password reset instructions.'
+        redirect_to(root_path, notice: "Check your email for password reset instructions.")
       else
-        redirect_to new_confirmation_path,
-                    alert: 'Please confirm your email first.'
+        redirect_to(
+          new_confirmation_path,
+          alert: "Please confirm your email first.",
+        )
       end
     else
-      redirect_to root_path, alert: 'We could not find a user with that email.'
+      redirect_to(root_path, alert: "We could not find a user with that email.")
     end
   end
 
@@ -34,16 +38,16 @@ class PasswordsController < ApplicationController
     @user = User.find_signed(params[:password_reset_token], purpose: :password_reset)
     if @user
       if @user.unconfirmed?
-        redirect_to new_confirmation_path, alert: 'Please confirm your email first.'
+        redirect_to(new_confirmation_path, alert: "Please confirm your email first.")
       elsif @user.update(password_params)
-        redirect_to login_path, notice: 'Your password has been reset.'
+        redirect_to(login_path, notice: "Your password has been reset.")
       else
         flash.now[:alert] = @user.errors.full_messages.to_sentence
-        render :edit, status: :unprocessable_entity
+        render(:edit, status: :unprocessable_entity)
       end
     else
-      flash.now[:alert] = 'Invalid token.'
-      render :new, status: :unprocessable_entity
+      flash.now[:alert] = "Invalid token."
+      render(:new, status: :unprocessable_entity)
     end
   end
 

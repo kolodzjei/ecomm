@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-RSpec.describe DownloadOrdersCsvJob, type: :job do
-  describe '#perform' do
+require "rails_helper"
+RSpec.describe(DownloadOrdersCsvJob, type: :job) do
+  describe "#perform" do
     let(:start_date) { Date.today.beginning_of_month.to_s }
     let(:end_date) { Date.today.end_of_month.to_s }
     let(:user) { create(:user) }
@@ -18,17 +18,17 @@ RSpec.describe DownloadOrdersCsvJob, type: :job do
     let(:order2) { create(:order, :with_specific_user_and_items, user_id: user.id, items:) }
     let(:orders) { [order, order2] }
     before do
-      allow(Order).to receive(:where).and_return(orders)
+      allow(Order).to(receive(:where).and_return(orders))
     end
 
-    it 'generates csv data' do
-      expect(CSV).to receive(:generate).and_call_original
+    it "generates csv data" do
+      expect(CSV).to(receive(:generate).and_call_original)
       DownloadOrdersCsvJob.new.perform(start_date, end_date)
     end
 
-    it 'saves csv data to file' do
-      file_path = Rails.root.join('tmp', 'orders.csv')
-      expect(File).to receive(:open).with(file_path, 'w')
+    it "saves csv data to file" do
+      file_path = Rails.root.join("tmp", "orders.csv")
+      expect(File).to(receive(:open).with(file_path, "w"))
       DownloadOrdersCsvJob.new.perform(start_date, end_date)
     end
   end

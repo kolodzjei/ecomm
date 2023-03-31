@@ -3,7 +3,7 @@
 class Order < ApplicationRecord
   has_many :items, dependent: :destroy
   belongs_to :user
-  enum status: %i[pending paid shipped cancelled received]
+  enum status: [:pending, :paid, :shipped, :cancelled, :received]
   default_scope -> { order(created_at: :desc) }
   validates :shipping_address_line_1, presence: true
   validates :shipping_country, presence: true
@@ -35,7 +35,7 @@ class Order < ApplicationRecord
   end
 
   def paid?
-    status != 'pending' && status != 'cancelled'
+    status != "pending" && status != "cancelled"
   end
 
   private

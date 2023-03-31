@@ -37,7 +37,7 @@ class User < ApplicationRecord
   end
 
   def generate_confirmation_token
-    signed_id expires_in: 15.minutes, purpose: :confirmation
+    signed_id(expires_in: 15.minutes, purpose: :confirmation)
   end
 
   def send_confirmation_email!
@@ -46,7 +46,7 @@ class User < ApplicationRecord
   end
 
   def generate_password_reset_token
-    signed_id expires_in: 15.minutes, purpose: :reset_password
+    signed_id(expires_in: 15.minutes, purpose: :reset_password)
   end
 
   def send_password_reset_email!

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'csv'
+require "csv"
 
 class DownloadOrdersCsvJob
   include Sidekiq::Job
@@ -13,13 +13,13 @@ class DownloadOrdersCsvJob
     orders = Order.where(created_at: start_date.beginning_of_day..end_date.end_of_day)
 
     csv_data = CSV.generate do |csv|
-      csv << ['Order ID', 'Order Date', 'Order Status', 'Order Total', 'Customer']
+      csv << ["Order ID", "Order Date", "Order Status", "Order Total", "Customer"]
       orders.each do |order|
         csv << [order.id, order.created_at, order.status, order.total, order.user.email]
       end
     end
 
-    file_path = Rails.root.join('tmp', "orders#{jid}.csv")
-    File.open(file_path, 'w') { |file| file.write(csv_data) }
+    file_path = Rails.root.join("tmp", "orders#{jid}.csv")
+    File.open(file_path, "w") { |file| file.write(csv_data) }
   end
 end

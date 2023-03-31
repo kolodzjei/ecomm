@@ -17,11 +17,11 @@ class ItemsController < ApplicationController
         cart.items.create(product_id: product.id, quantity: 1, cart_id: cart.id)
       end
 
-      flash[:notice] = 'Item added to cart'
-      redirect_to carts_path
+      flash[:notice] = "Item added to cart"
+      redirect_to(carts_path)
     else
-      flash[:alert] = 'Something went wrong'
-      redirect_to root_path
+      flash[:alert] = "Something went wrong"
+      redirect_to(root_path)
     end
   end
 
@@ -29,10 +29,10 @@ class ItemsController < ApplicationController
     item = Item.find_by(id: params[:id])
     if item && current_user.cart.id == item.cart_id
       item.destroy
-      redirect_to carts_path
+      redirect_to(carts_path)
     else
-      flash[:alert] = 'Something went wrong'
-      redirect_to root_path
+      flash[:alert] = "Something went wrong"
+      redirect_to(root_path)
     end
   end
 
@@ -40,10 +40,10 @@ class ItemsController < ApplicationController
     item = Item.find_by(id: params[:id])
     if item && current_user.cart.id == item.cart_id
       item.update_attribute(:quantity, item.quantity + 1)
-      redirect_to carts_path
+      redirect_to(carts_path)
     else
-      flash[:alert] = 'Something went wrong'
-      redirect_to root_path
+      flash[:alert] = "Something went wrong"
+      redirect_to(root_path)
     end
   end
 
@@ -51,10 +51,10 @@ class ItemsController < ApplicationController
     item = Item.find_by(id: params[:id])
     if item && current_user.cart.id == item.cart_id
       item.update_attribute(:quantity, item.quantity - 1) if item.quantity > 1
-      redirect_to carts_path
+      redirect_to(carts_path)
     else
-      flash[:alert] = 'Something went wrong'
-      redirect_to root_path
+      flash[:alert] = "Something went wrong"
+      redirect_to(root_path)
     end
   end
 end

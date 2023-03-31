@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class ProductsController < ApplicationController
-  before_action :authenticate_admin!, only: %i[index new create edit update destroy]
-  before_action :authenticate_user!, only: %i[show]
+  before_action :authenticate_admin!, only: [:index, :new, :create, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:show]
 
   def index
     @pagy, @products = pagy(Product.all, items: 12)
@@ -12,8 +12,8 @@ class ProductsController < ApplicationController
     @product = Product.find_by(id: params[:id])
     return unless @product.nil?
 
-    flash[:alert] = 'Product not found'
-    redirect_to root_url
+    flash[:alert] = "Product not found"
+    redirect_to(root_url)
   end
 
   def new
@@ -31,11 +31,11 @@ class ProductsController < ApplicationController
     end
 
     if @product.save
-      flash[:success] = 'Product created'
-      redirect_to @product
+      flash[:success] = "Product created"
+      redirect_to(@product)
     else
-      flash.now[:alert] = 'Product not created'
-      render :new, status: :unprocessable_entity
+      flash.now[:alert] = "Product not created"
+      render(:new, status: :unprocessable_entity)
     end
   end
 
@@ -55,18 +55,18 @@ class ProductsController < ApplicationController
     end
 
     if @product.save
-      flash[:success] = 'Product updated'
-      redirect_to @product
+      flash[:success] = "Product updated"
+      redirect_to(@product)
     else
-      flash.now[:alert] = 'Product not updated'
-      render :edit, status: :unprocessable_entity
+      flash.now[:alert] = "Product not updated"
+      render(:edit, status: :unprocessable_entity)
     end
   end
 
   def destroy
     @product = Product.find_by(id: params[:id])
     @product.destroy
-    flash[:success] = 'Product deleted'
+    flash[:success] = "Product deleted"
     redirect_back_or_to(root_url)
   end
 

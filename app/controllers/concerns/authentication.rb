@@ -19,16 +19,16 @@ module Authentication
   end
 
   def redirect_if_authenticated
-    redirect_to root_path, alert: 'You are already logged in.' if user_signed_in?
+    redirect_to(root_path, alert: "You are already logged in.") if user_signed_in?
   end
 
   def authenticate_user!
     store_location
-    redirect_to login_path, alert: 'You must be logged in to do that.' unless user_signed_in?
+    redirect_to(login_path, alert: "You must be logged in to do that.") unless user_signed_in?
   end
 
   def forget(user)
-    cookies.delete :remember_token
+    cookies.delete(:remember_token)
     user.regenerate_remember_token
   end
 
@@ -46,20 +46,20 @@ module Authentication
   end
 
   def authenticate_admin!
-    redirect_to root_path, alert: 'You must be an admin to do that.' unless admin?
+    redirect_to(root_path, alert: "You must be an admin to do that.") unless admin?
   end
 
   def current_user
     Current.user ||= if session[:current_user_id].present?
-                       User.find_by(id: session[:current_user_id])
-                     elsif cookies.encrypted[:remember_token].present?
-                       User.find_by(remember_token: cookies.permanent.encrypted[:remember_token])
-                     end
+      User.find_by(id: session[:current_user_id])
+    elsif cookies.encrypted[:remember_token].present?
+      User.find_by(remember_token: cookies.permanent.encrypted[:remember_token])
+    end
 
     if Current.user.present? && Current.user.disabled?
       logout
       Current.user = nil
-      redirect_to root_path, alert: 'Your account has been disabled.'
+      redirect_to(root_path, alert: "Your account has been disabled.")
     end
 
     Current.user
