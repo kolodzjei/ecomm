@@ -1,28 +1,28 @@
+<div class="my-form">
+  <div class="form">
+    <h2>Sign up</h2>
+    <%= form_with model: @user, url: signup_path do |f| %>
+      <%= render partial: "shared/form_errors", locals: { object: f.object } %>
 
-<div class="signup-form">
-<div class="form">
-<h2>Sign up</h2>
-<%= form_with model: @user, url: signup_path do |f| %>
-  <%= render partial: "shared/form_errors", locals: {object: f.object} %>
+      <div class="mb-3">
+        <%= f.text_field :name, required: true, class: "form-control inputfield first", placeholder: "Name" %>
+      </div>
 
-  <div>
-    <%= f.text_field :name, required: true, class:"inputfield first", placeholder: "Name" %>
+      <div class="mb-3">
+        <%= f.email_field :email, required: true, class: "form-control inputfield", placeholder: "E-mail" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.password_field :password, required: true, class: "form-control inputfield", placeholder: "Password" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.password_field :password_confirmation, required: true, class: "form-control inputfield", placeholder: "Password confirmation" %>
+      </div>
+
+      <%= f.submit "Create account", class: "btn btn-primary", id: "submit" %>
+    <% end %>
+
+    <%= link_to "Already have an account? Log in", login_path, style: "color: black; text-decoration:none;" %>
   </div>
-
-  <div>
-    <%= f.email_field :email, required: true, class:"inputfield", placeholder: "E-mail" %>
-  </div>
-
-  <div>
-    <%= f.password_field :password, required: true, class:"inputfield", placeholder: "Password" %>
-  </div>
-
-  <div>
-    <%= f.password_field :password_confirmation, required: true, class:"inputfield", placeholder: "Password confirmation" %>
-  </div>
-
-  <%= f.submit "Create account", id: "submit" %>
-<% end %>
-<%= link_to "Already have an account? Log in", login_path, class:"login" %>
-</div>
 </div>
