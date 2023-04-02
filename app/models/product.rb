@@ -25,11 +25,22 @@ class Product < ApplicationRecord
     all = Product.all
     all = all.by_category(params[:category_ids]) if params[:category_ids].present?
     all = all.by_search(params[:search]) if params[:search].present?
+    all = case params[:sort_by]
+    when "name" then all.order(name: :asc)
+    when "name_desc" then all.order(name: :desc)
+    when "price" then all.order(price: :asc)
+    when "price_desc" then all.order(price: :desc)
+    else all
+    end
     all
   end
 
   def average_rating
-    reviews.average(:rating).round(1)
+    if reviews.count.positive?
+      reviews.average(:rating).round(1)
+    else
+      0
+    end
   end
 
   private
