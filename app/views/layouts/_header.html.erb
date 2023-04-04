@@ -17,6 +17,19 @@
             <%= hidden_field_tag "category_ids[]", id, multiple: true %>
           <% end %>
         <% end %>
+
+        <% if params[:sort_by].present? %>
+          <%= hidden_field_tag "sort_by", params[:sort_by] %>
+        <% end %>
+
+        <% if params[:min_price].present? %>
+          <%= hidden_field_tag "min_price", params[:min_price] %>
+        <% end %>
+
+        <% if params[:max_price].present? %>
+          <%= hidden_field_tag "max_price", params[:max_price] %>
+        <% end %>
+
       </form>
       <% end %>
       <ul class="navbar-nav ms-auto">

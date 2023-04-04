@@ -20,6 +20,8 @@ class Product < ApplicationRecord
   before_save :set_default_image
   scope :by_category, ->(category_ids) { joins(:categories).where(categories: { id: category_ids }).distinct }
   scope :by_search, ->(search) { where("products.name LIKE ?", "%#{search}%") }
+  scope :by_min_price, ->(min_price) { where("products.price >= ?", min_price) }
+  scope :by_max_price, ->(max_price) { where("products.price <= ?", max_price) }
 
   def self.search(params)
     all = Product.all
@@ -32,6 +34,8 @@ class Product < ApplicationRecord
     when "price_desc" then all.order(price: :desc)
     else all
     end
+    all = all.by_min_price(params[:min_price]) if params[:min_price].present?
+    all = all.by_max_price(params[:max_price]) if params[:max_price].present?
     all
   end
 

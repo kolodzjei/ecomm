@@ -1,0 +1,38 @@
+<div class="col-md-3">
+  <div class="card mb-4">
+    <div class="card-header">
+      <h4 class="card-title mb-0">Filters</h4>
+    </div>
+    <%= form_tag root_path, method: :get, class: "card-body" do %>
+      <h6 class="card-subtitle mb-2 text-muted">Categories</h6>
+      <div class="mb-3">
+        <% Category.all.each do |category| %>
+          <div class="form-check">
+            <%= check_box_tag "category_ids[]", category.id, params[:category_ids]&.include?(category.id.to_s), id: "category-#{category.id}", class: "form-check-input" %>
+            <%= label_tag "category-#{category.id}", category.name, class: "form-check-label" %>
+          </div>
+        <% end %>
+      </div>
+      <h6 class="card-subtitle mb-2 text-muted">Price Range</h6>
+      <div class="mb-3">
+        <div class="input-group" id="price-range">
+          <span class="input-group-text">$</span>
+          <%= number_field_tag "min_price", params[:min_price], class: "form-control" %>
+          <span class="input-group-text">-</span>
+          <%= number_field_tag "max_price", params[:max_price], class: "form-control" %>
+        </div>
+        <div class="text-danger" id="price-range-error" style="display:none">Minimum price cannot be greater than maximum price</div>
+      </div>
+      <h6 class="card-subtitle mb-2 text-muted">Sort By</h6>
+      <div class="mb-3">
+        <%= select_tag "sort_by", options_for_select({"Default" => "", "Name [A-Z]" => "name", "Name [Z-A]" => "name_desc", "Lowest Price" => "price", "Highest Price" => "price_desc"}, params[:sort_by]), class: "form-select" %>
+      </div>
+      <div class="d-grid gap-2">
+        <%= submit_tag "Filter", class: "btn btn-primary" %>
+      </div>
+      <% if params[:search].present? %>
+        <%= hidden_field_tag "search", params[:search] %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
