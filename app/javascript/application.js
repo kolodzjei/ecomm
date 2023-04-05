@@ -5,7 +5,3 @@ import "jquery"
 import "jquery_ujs"
 import "popper"
 import "bootstrap"
-import 'custom/image_size'
-import 'custom/download_csv'
-import 'custom/alerts'
-import 'custom/price'

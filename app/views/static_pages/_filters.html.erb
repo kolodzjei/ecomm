@@ -1,4 +1,4 @@
-<div class="col-md-3">
+<div class="col-md-3" data-controller="price">
   <div class="card mb-4">
     <div class="card-header">
       <h4 class="card-title mb-0">Filters</h4>
@@ -17,18 +17,18 @@
       <div class="mb-3">
         <div class="input-group" id="price-range">
           <span class="input-group-text">$</span>
-          <%= number_field_tag "min_price", params[:min_price], class: "form-control" %>
+          <%= number_field_tag "min_price", params[:min_price], class: "form-control", 'data-price-target': "input1" %>
           <span class="input-group-text">-</span>
-          <%= number_field_tag "max_price", params[:max_price], class: "form-control" %>
+          <%= number_field_tag "max_price", params[:max_price], class: "form-control", 'data-price-target': "input2" %>
+          <div class="text-danger" id="price-range-error" style="display:none" data-price-target="error">Minimum price cannot be greater than maximum price</div>
         </div>
-        <div class="text-danger" id="price-range-error" style="display:none">Minimum price cannot be greater than maximum price</div>
       </div>
       <h6 class="card-subtitle mb-2 text-muted">Sort By</h6>
       <div class="mb-3">
         <%= select_tag "sort_by", options_for_select({"Default" => "", "Name [A-Z]" => "name", "Name [Z-A]" => "name_desc", "Lowest Price" => "price", "Highest Price" => "price_desc"}, params[:sort_by]), class: "form-select" %>
       </div>
       <div class="d-grid gap-2">
-        <%= submit_tag "Filter", class: "btn btn-primary" %>
+        <%= submit_tag "Filter", class: "btn btn-primary", 'data-price-target': "submitButton" %>
       </div>
       <% if params[:search].present? %>
         <%= hidden_field_tag "search", params[:search] %>

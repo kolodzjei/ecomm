@@ -1,5 +1,5 @@
 <div class="my-form">
-  <div class="form">
+  <div class="form" data-controller="imagesize">
     <%= form_with model: @product do |f| %>
       <%= render 'shared/form_errors', object: f.object %>
 
@@ -30,7 +30,7 @@
 
       <div class="mb-3">
         <%= f.label :image, class: "form-label" %>
-        <%= f.file_field :image, accept: "image/jpeg, image/jpg, image/png", class: "form-control" %>
+        <%= f.file_field :image, accept: "image/jpeg, image/jpg, image/png", class: "form-control", "data-imagesize-target": "input" %>
       </div>
 
       <%= f.submit yield(:button_text), class: "btn btn-primary" %>

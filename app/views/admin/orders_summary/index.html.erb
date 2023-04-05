@@ -1,16 +1,16 @@
-<div class="container-fluid">
+<div class="container-fluid" data-controller="csv">
   <h1 class="mb-4">Orders Summary</h1>
-    <button id="download-csv" class="btn btn-primary btn-sm">Download Orders CSV</button>
+    <button id="download-csv" class="btn btn-primary btn-sm", data-csv-target="downloadButton" data-action="click->csv#onClick">Download Orders CSV</button>
   
   <%= form_tag admin_summary_path, method: :get, class: "mb-3" do %>
     <div class="row">
       <div class="col-md-3">
         <%= label_tag "start_date", "Start Date" %>
-        <%= date_field_tag "start_date", params[:start_date] || @start_date, class: "form-control" %>
+        <%= date_field_tag "start_date", params[:start_date] || @start_date, class: "form-control", "data-csv-target": "startDate" %>
       </div>
       <div class="col-md-3">
         <%= label_tag "end_date", "End Date" %>
-        <%= date_field_tag "end_date", params[:end_date] || @end_date, class: "form-control" %>
+        <%= date_field_tag "end_date", params[:end_date] || @end_date, class: "form-control", "data-csv-target": "endDate" %>
       </div>
       <div class="col-md-3">
         <%= submit_tag "Filter", class: "btn btn-primary mt-4" %>
